@@ -1,8 +1,6 @@
 name: modelstore CI build
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -24,14 +22,3 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Deploy javadoc
-      uses: MathieuSoysal/Javadoc-publisher.yml@v3.0.2
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        javadoc-branch: gh-pages
-        java-version: 21
-        target-folder: javadoc # url will be https://<username>.github.io/<repo>/javadoc, This can be left as nothing to generate javadocs in the root folder.
-        project: maven
