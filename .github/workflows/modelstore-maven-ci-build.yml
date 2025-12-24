@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Deploy javadoc
-      uses: MathieuSoysal/Javadoc-publisher.yml@v3.0.2
+      uses: MathieuSoysal/Javadoc-publisher.yml@fda475b197081ba1eca7a1dfadf0c017080a1623
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         javadoc-branch: gh-pages
