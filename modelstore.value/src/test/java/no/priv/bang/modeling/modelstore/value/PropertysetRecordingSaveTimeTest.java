@@ -323,7 +323,7 @@ class PropertysetRecordingSaveTimeTest {
         original.setDoubleProperty("pi", 3.14);
         original.setLongProperty("meaning", 42L);
         original.setStringProperty("foo", "bar");
-        var propertyset = valueCreator.wrapInModificationTracker(recorder, original);
+        propertyset = valueCreator.wrapInModificationTracker(recorder, original);
         propertyset.copyValues(original);
         assertThat(propertyset.keySet()).containsExactlyInAnyOrderElementsOf(original.keySet());
         assertThat(propertyset.entrySet()).hasSize(original.entrySet().size());
@@ -333,8 +333,8 @@ class PropertysetRecordingSaveTimeTest {
     @Test
     void testMapBehaviour() {
         var mapToCopy = Map.of("pi", valueCreator.fromDouble(3.14), "meaning", valueCreator.fromLong(42L));
-        var inner = valueCreator.newPropertyset();
-        var propertyset = valueCreator.wrapInModificationTracker(recorder, inner);
+        inner = valueCreator.newPropertyset();
+        propertyset = valueCreator.wrapInModificationTracker(recorder, inner);
         assertThat(propertyset).isEmpty();
         propertyset.putAll(mapToCopy);
         assertThat(propertyset).hasSize(mapToCopy.size());

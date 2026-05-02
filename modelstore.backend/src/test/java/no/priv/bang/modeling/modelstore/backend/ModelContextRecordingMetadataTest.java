@@ -204,7 +204,7 @@ class ModelContextRecordingMetadataTest {
         var modelstore = new ModelstoreProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        var context = (ModelContextRecordingMetadata) modelstore.createContext();
+        context = (ModelContextRecordingMetadata) modelstore.createContext();
         var metadataWithErrors = createMetadataWithErrors(context);
         context.setLastmodifiedtimes(metadataWithErrors);
 
@@ -234,7 +234,7 @@ class ModelContextRecordingMetadataTest {
         var modelstore = mock(Modelstore.class);
         when(modelstore.getValueCreator()).thenReturn(valueCreator);
         var inner = new ModelContextImpl(modelstore);
-        var context = new ModelContextRecordingMetadata(inner, dateFactory, valueCreator);
+        context = new ModelContextRecordingMetadata(inner, dateFactory, valueCreator);
         assertEquals(-1866972311, context.hashCode());
         addPropertysetsToContext(inner);
         assertEquals(-267642137, context.hashCode());
@@ -249,7 +249,7 @@ class ModelContextRecordingMetadataTest {
         when(modelstore.getValueCreator()).thenReturn(valueCreator);
         var inner = new ModelContextImpl(modelstore);
         addPropertysetsToContext(inner);
-        var context = new ModelContextRecordingMetadata(inner, dateFactory, valueCreator);
+        context = new ModelContextRecordingMetadata(inner, dateFactory, valueCreator);
         assertEquals(context, context);
         assertNotNull(context);
         assertNotEquals(context, valueCreator.newPropertyset());
@@ -269,7 +269,7 @@ class ModelContextRecordingMetadataTest {
         when(modelstore.getValueCreator()).thenReturn(valueCreator);
         var inner = new ModelContextImpl(modelstore);
         addPropertysetsToContext(inner);
-        var context = new ModelContextRecordingMetadata(inner, dateFactory, valueCreator);
+        context = new ModelContextRecordingMetadata(inner, dateFactory, valueCreator);
         addPropertysetsToContext(context);
         assertThat(context.toString()).startsWith("ModelContextRecordingMetadata ");
     }
