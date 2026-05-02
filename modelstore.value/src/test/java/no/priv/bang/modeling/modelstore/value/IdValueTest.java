@@ -19,7 +19,7 @@ class IdValueTest {
     private Value value;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         value = new IdValue(UUID.fromString("e40fb164-3dd3-43b8-839f-8781bbcb2a15"));
     }
 

@@ -18,7 +18,7 @@ class StringValueTest {
     private Value valueNotANumber;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         valueWithNumber = toStringValue("13");
         valueNotANumber = toStringValue("Not a number");
     }

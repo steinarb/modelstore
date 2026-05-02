@@ -19,7 +19,7 @@ class ListValueTest {
     private Value value;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         valueList = newList();
         valueList.add(toBooleanValue(Boolean.TRUE));
         valueList.add(toLongValue(42));

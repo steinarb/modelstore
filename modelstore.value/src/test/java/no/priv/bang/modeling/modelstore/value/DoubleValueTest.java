@@ -17,7 +17,7 @@ class DoubleValueTest {
     private Value value;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         value = toDoubleValue(3.14);
     }
 

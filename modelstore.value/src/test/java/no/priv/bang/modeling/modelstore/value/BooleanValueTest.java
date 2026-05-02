@@ -17,7 +17,7 @@ class BooleanValueTest {
     private Value value;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         value = toBooleanValue(Boolean.TRUE);
     }
 

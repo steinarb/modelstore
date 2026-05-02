@@ -17,7 +17,7 @@ class LongValueTest {
     private Value value;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         value = toLongValue(42);
     }
 

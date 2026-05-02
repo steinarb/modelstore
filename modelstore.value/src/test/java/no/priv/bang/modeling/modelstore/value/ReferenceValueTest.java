@@ -21,7 +21,7 @@ class ReferenceValueTest {
     private Value value;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         referencedObject = new PropertysetImpl(UUID.fromString("276dbd6e-dc46-4c14-af9e-83c63c10e0b3"));
         referencedObject.setBooleanProperty("boolean", Boolean.TRUE);
         referencedObject.setLongProperty("long", Long.valueOf(42));

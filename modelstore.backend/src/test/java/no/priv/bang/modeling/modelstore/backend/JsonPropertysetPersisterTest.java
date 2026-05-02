@@ -218,10 +218,9 @@ class JsonPropertysetPersisterTest {
     /**
      * Corner case unit test for {@link JsonPropertysetPersister#persist(File, ModelContext)}
      * try output into a null {@link File}.
-     * @throws IOException
      */
     @Test
-    void testPersistNullFile() throws IOException {
+    void testPersistNullFile() {
         ModelContext context = modelstore.createContext();
         JsonFactory jsonFactory = new JsonFactory();
         JsonPropertysetPersister persister = new JsonPropertysetPersister(jsonFactory, null);
@@ -233,10 +232,9 @@ class JsonPropertysetPersisterTest {
     /**
      * Corner case unit test for {@link JsonPropertysetPersister#persist(File, ModelContext)}
      * try output into a null {@link File} in a directory that doesn't exist.
-     * @throws IOException
      */
     @Test
-    void testPersistFileInNonexistingDirectory() throws IOException {
+    void testPersistFileInNonexistingDirectory() {
         ModelContext context = modelstore.createContext();
         JsonFactory jsonFactory = new JsonFactory();
         JsonPropertysetPersister persister = new JsonPropertysetPersister(jsonFactory, null);

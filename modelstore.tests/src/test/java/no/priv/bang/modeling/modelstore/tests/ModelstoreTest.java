@@ -46,7 +46,7 @@ public class ModelstoreTest extends KarafTestSupport {
     }
 
     @Test
-    public void modelstoreIntegrationTest() throws Exception {
+    public void modelstoreIntegrationTest() {
         // Verify that the service could be injected
         var modelstoreService = getOsgiService(Modelstore.class);
         assertNotNull(modelstoreService);
@@ -102,7 +102,7 @@ public class ModelstoreTest extends KarafTestSupport {
     }
 
     @Test
-    public void testEmbeddedAspects() throws Exception {
+    public void testEmbeddedAspects() {
         var modelstoreService = getOsgiService(Modelstore.class);
         ModelContext context = modelstoreService.getDefaultContext();
         int numberOfEmbeddedAspects = 6; // Adjust when adding embedded aspects

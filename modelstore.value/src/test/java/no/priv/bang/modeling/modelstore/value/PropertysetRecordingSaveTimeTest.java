@@ -111,10 +111,9 @@ class PropertysetRecordingSaveTimeTest {
 
     /**
      * Unit test of {@link PropertysetRecordingSaveTime#setProperty()}.
-     * @throws InterruptedException
      */
     @Test
-    void testSetProperty() throws InterruptedException {
+    void testSetProperty() {
         // Expected the set value to change the lastmodifiedtime of the propertyset
         var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         propertyset.setProperty("a", Values.toDoubleValue(1.7));
@@ -158,10 +157,9 @@ class PropertysetRecordingSaveTimeTest {
      * Unit test of {@link PropertysetRecordingSaveTime#setBooleanProperty(String, boolean)},
      * {@link PropertysetRecordingSaveTime#setBooleanProperty(String, Boolean)}, and
      * {@link PropertysetRecordingSaveTime#getBooleanProperty(String)}
-     * @throws InterruptedException
      */
     @Test
-    void testSetGetBooleanProperty() throws InterruptedException {
+    void testSetGetBooleanProperty() {
         // Expected the set value to change the lastmodifiedtime of the propertyset
         var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         propertyset.setBooleanProperty("a", Boolean.FALSE);
@@ -178,10 +176,9 @@ class PropertysetRecordingSaveTimeTest {
      * Unit test of {@link PropertysetRecordingSaveTime#setLongProperty(String, long)},
      * {@link PropertysetRecordingSaveTime#setLongProperty(String, Long)}, and
      * {@link PropertysetRecordingSaveTime#getLongProperty(String)}
-     * @throws InterruptedException
      */
     @Test
-    void testSetGetLongProperty() throws InterruptedException {
+    void testSetGetLongProperty() {
         // Expected the set value to change the lastmodifiedtime of the propertyset
         var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         propertyset.setLongProperty("b", Long.valueOf(128));
@@ -198,10 +195,9 @@ class PropertysetRecordingSaveTimeTest {
      * Unit test of {@link PropertysetRecordingSaveTime#setDoubleProperty(String, double)},
      * {@link PropertysetRecordingSaveTime#setDoubleProperty(String, Double)}, and
      * {@link PropertysetRecordingSaveTime#getDoubleProperty(String)}
-     * @throws InterruptedException
      */
     @Test
-    void testSetGetDoubleProperty() throws InterruptedException {
+    void testSetGetDoubleProperty() {
         // Expected the set value to change the lastmodifiedtime of the propertyset
         var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         propertyset.setDoubleProperty("c", Double.valueOf(12.8));
@@ -217,10 +213,9 @@ class PropertysetRecordingSaveTimeTest {
     /**
      * Unit test of {@link PropertysetRecordingSaveTime#setStringProperty(String, String)},
      * and {@link PropertysetRecordingSaveTime#getStringProperty(String)}
-     * @throws InterruptedException
      */
     @Test
-    void testSetGetStringProperty() throws InterruptedException {
+    void testSetGetStringProperty() {
         // Expected the set value to change the lastmodifiedtime of the propertyset
         var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         propertyset.setStringProperty("d", "abcd");
@@ -232,10 +227,9 @@ class PropertysetRecordingSaveTimeTest {
     /**
      * Unit test of {@link PropertysetRecordingSaveTime#setComplexProperty(String, Propertyset)},
      * and {@link PropertysetRecordingSaveTime#getComplexProperty(String)}
-     * @throws InterruptedException
      */
     @Test
-    void testSetGetComplexProperty() throws InterruptedException {
+    void testSetGetComplexProperty() {
         // Expected the set value to change the lastmodifiedtime of the propertyset
         var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         // This is a back door: it is possible to manipulate a complex property without changing the timestamp on the propertyset
@@ -254,10 +248,9 @@ class PropertysetRecordingSaveTimeTest {
     /**
      * Unit test of {@link PropertysetRecordingSaveTime#setReferenceProperty(String, Propertyset)},
      * and {@link PropertysetRecordingSaveTime#getReferenceProperty(String)}
-     * @throws InterruptedException
      */
     @Test
-    void testSetGetReferenceProperty() throws InterruptedException {
+    void testSetGetReferenceProperty() {
         // Expected the set value to change the lastmodifiedtime of the propertyset
         var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         var newReferencedPropertysetId = UUID.randomUUID();
@@ -270,10 +263,9 @@ class PropertysetRecordingSaveTimeTest {
     /**
      * Unit test of {@link PropertysetRecordingSaveTime#setListProperty(String, Propertyset)},
      * and {@link PropertysetRecordingSaveTime#getListProperty(String)}
-     * @throws InterruptedException
      */
     @Test
-    void testSetGetListProperty() throws InterruptedException {
+    void testSetGetListProperty() {
         // Expected the set value to change the lastmodifiedtime of the propertyset
         var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         // This is a back door: it is possible to manipulate a list property without changing the timestamp on the propertyset

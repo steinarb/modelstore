@@ -331,7 +331,7 @@ class ModelContextTest {
      * @throws InterruptedException
      */
     @Test
-    void testMergeWithOverlapBetweenContexts() throws IOException, InterruptedException {
+    void testMergeWithOverlapBetweenContexts() throws IOException {
         var modelstore = new ModelstoreProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
@@ -400,7 +400,7 @@ class ModelContextTest {
      * @throws InterruptedException
      */
     @Test
-    void testMergeWithNull() throws IOException, InterruptedException {
+    void testMergeWithNull() {
         var modelstore = new ModelstoreProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();

@@ -19,7 +19,7 @@ class EmptyValueListTest {
     private ValueList list;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         list = new EmptyValueList();
     }
 

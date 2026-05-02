@@ -19,7 +19,7 @@ class ComplexValueTest {
     private Value value;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         complexProperty = new PropertysetImpl();
         complexProperty.setBooleanProperty("boolean", Boolean.TRUE);
         complexProperty.setLongProperty("long", Long.valueOf(42));
