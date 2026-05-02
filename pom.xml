@@ -87,7 +87,6 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <show>private</show>
-                    <source>11</source>
                 </configuration>
                 <executions>
                     <execution>
