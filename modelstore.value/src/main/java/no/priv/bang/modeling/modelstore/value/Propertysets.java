@@ -19,8 +19,7 @@ public class Propertysets {
      * @return the wrapped {@link Propertyset} if the argument wraps a {@link Propertyset} or the argument itself it it doesn't wrap another {@link Propertyset}
      */
     public static Propertyset findWrappedPropertyset(Propertyset propertyset) {
-        if (propertyset instanceof PropertysetRecordingSaveTime) {
-            var wrapper = (PropertysetRecordingSaveTime) propertyset;
+        if (propertyset instanceof PropertysetRecordingSaveTime wrapper) {
             return wrapper.getPropertyset();
         }
 

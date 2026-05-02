@@ -17,8 +17,7 @@ public class ModelContexts {
     static final UUID metadataId = UUID.fromString("b1ad694b-4003-412b-8249-a7d1a0a24cf3");
 
     public static ModelContext findWrappedModelContext(ModelContext modelcontext) {
-        if (modelcontext instanceof ModelContextRecordingMetadata) {
-            var outer = (ModelContextRecordingMetadata) modelcontext;
+        if (modelcontext instanceof ModelContextRecordingMetadata outer) {
             return outer.getWrappedModelContext();
         }
 

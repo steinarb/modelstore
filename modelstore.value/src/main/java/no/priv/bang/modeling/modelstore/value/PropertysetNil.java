@@ -149,14 +149,7 @@ public final class PropertysetNil implements Propertyset {
             return false;
         }
 
-        if (obj instanceof Propertyset) {
-            var other = (Propertyset) obj;
-            if (other.getPropertynames().isEmpty()) {
-                return true;
-            }
-        }
-
-        return false;
+        return(obj instanceof Propertyset other && other.getPropertynames().isEmpty());
     }
 
     @Override
