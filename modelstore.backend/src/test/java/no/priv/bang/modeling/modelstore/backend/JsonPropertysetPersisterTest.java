@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.Date;
@@ -52,12 +51,10 @@ class JsonPropertysetPersisterTest {
 
     /**
      * Parse a file with propertysets and aspects.
-     * @throws URISyntaxException
-     * @throws IOException
-     * @throws JsonParseException
+     * @throws Exception
      */
     @Test
-    void testParseComplexFile() throws URISyntaxException, JsonParseException, IOException {
+    void testParseComplexFile() throws Exception {
         ModelContext context = modelstore.getDefaultContext();
         File carsAndBicycles = getResourceAsFile("/json/cars_and_bicycles.json");
 
@@ -73,12 +70,10 @@ class JsonPropertysetPersisterTest {
 
     /**
      * Test parsing with the id field not first.
-     * @throws URISyntaxException
-     * @throws IOException
-     * @throws JsonParseException
+     * @throws Exception
      */
     @Test
-    void testParseIdNotFirst() throws URISyntaxException, JsonParseException, IOException {
+    void testParseIdNotFirst() throws Exception {
         ModelContext context = modelstore.getDefaultContext();
         File carsAndBicyclesIdNotFirst = getResourceAsFile("/json/cars_and_bicycles_id_not_first.json");
 
@@ -103,12 +98,10 @@ class JsonPropertysetPersisterTest {
 
     /**
      * Test that boolean fields can be parsed.
-     * @throws URISyntaxException
-     * @throws IOException
-     * @throws JsonParseException
+     * @throws Exception
      */
     @Test
-    void parseBooleanProperties() throws URISyntaxException, JsonParseException, IOException {
+    void parseBooleanProperties() throws Exception {
         ModelContext context = modelstore.getDefaultContext();
         File withBoolean = getResourceAsFile("/json/with_boolean.json");
         JsonFactory jsonFactory = new JsonFactory();
@@ -143,12 +136,10 @@ class JsonPropertysetPersisterTest {
      *
      * This format is close to what the actual persist format will look like.
      *
-     * @throws URISyntaxException
-     * @throws IOException
-     * @throws JsonParseException
+     * @throws Exception
      */
     @Test
-    void parseObjectOnTop() throws URISyntaxException, JsonParseException, IOException {
+    void parseObjectOnTop() throws Exception {
         ModelContext context = modelstore.getDefaultContext();
         File withBoolean = getResourceAsFile("/json/object_on_top.json");
         JsonFactory jsonFactory = new JsonFactory();
@@ -178,12 +169,10 @@ class JsonPropertysetPersisterTest {
     /**
      * Test parsing propertyset with a list property.
      *
-     * @throws URISyntaxException
-     * @throws IOException
-     * @throws JsonParseException
+     * @throws Exception
      */
     @Test
-    void parseListProperty() throws URISyntaxException, JsonParseException, IOException {
+    void parseListProperty() throws Exception {
         ModelContext context = modelstore.getDefaultContext();
         File withListProperty = getResourceAsFile("/json/with_list_property.json");
         JsonFactory jsonFactory = new JsonFactory();
@@ -300,11 +289,10 @@ class JsonPropertysetPersisterTest {
     /**
      * Corner case unit test for {@link JsonPropertysetPersister#restore(File, ModelContext)}
      * try parsing a null {@link InputStream}.
-     * @throws IOException
-     * @throws JsonParseException
+     * @throws Exception
      */
     @Test
-    void testRestoreNullFile() throws JsonParseException, IOException {
+    void testRestoreNullFile() throws Exception {
         ModelContext context = modelstore.createContext();
         JsonFactory jsonFactory = new JsonFactory();
         JsonPropertysetPersister persister = new JsonPropertysetPersister(jsonFactory, null);
@@ -325,12 +313,10 @@ class JsonPropertysetPersisterTest {
      * Corner case unit test for {@link JsonPropertysetPersister#restore(File, ModelContext)}
      * try parsing a file that doesn't contain JSON.
      *
-     * @throws URISyntaxException
-     * @throws IOException
-     * @throws JsonParseException
+     * @throws Exception
      */
     @Test
-    void testRestoreFileNotJson() throws URISyntaxException, JsonParseException, IOException {
+    void testRestoreFileNotJson() throws Exception {
         ModelContext context = modelstore.createContext();
         JsonFactory jsonFactory = new JsonFactory();
         JsonPropertysetPersister persister = new JsonPropertysetPersister(jsonFactory, null);
@@ -367,11 +353,10 @@ class JsonPropertysetPersisterTest {
      * Corner case unit test for {@link JsonPropertysetPersister#restore(java.io.InputStream, ModelContext)}
      * try parsing a file that doesn't contain JSON.
      *
-     * @throws URISyntaxException
-     * @throws IOException
+     * @throws Exception
      */
     @Test
-    void testRestoreStreamNotJson() throws URISyntaxException, IOException {
+    void testRestoreStreamNotJson() throws Exception {
         ModelContext context = modelstore.createContext();
         JsonFactory jsonFactory = new JsonFactory();
         JsonPropertysetPersister persister = new JsonPropertysetPersister(jsonFactory, null);
@@ -395,11 +380,10 @@ class JsonPropertysetPersisterTest {
     /**
      * Unit test for {@link JsonPropertysetPersister#restore(java.io.InputStream, ModelContext)}
      *
-     * @throws URISyntaxException
-     * @throws IOException
+     * @throws Exception
      */
     @Test
-    void testRestoreFromStream() throws URISyntaxException, IOException {
+    void testRestoreFromStream() throws Exception {
         ModelContext context = modelstore.createContext();
         JsonFactory jsonFactory = new JsonFactory();
         JsonPropertysetPersister persister = new JsonPropertysetPersister(jsonFactory, valueCreator);
@@ -424,11 +408,10 @@ class JsonPropertysetPersisterTest {
      * Corner case unit test for {@link JsonPropertysetPersister#restore(java.io.InputStream, ModelContext)}
      * Test parsing an empty array.
      *
-     * @throws URISyntaxException
-     * @throws IOException
+     * @throws Exception
      */
     @Test
-    void testRestoreEmptyArrayFromStream() throws URISyntaxException, IOException {
+    void testRestoreEmptyArrayFromStream() throws Exception {
         ModelContext context = modelstore.createContext();
         JsonFactory jsonFactory = new JsonFactory();
         JsonPropertysetPersister persister = new JsonPropertysetPersister(jsonFactory, valueCreator);
@@ -453,11 +436,10 @@ class JsonPropertysetPersisterTest {
      * Corner case unit test for {@link JsonPropertysetPersister#restore(java.io.InputStream, ModelContext)}
      * Test parsing a JSON file with an object on the top level instead of an array.
      *
-     * @throws URISyntaxException
-     * @throws IOException
+     * @throws Exception
      */
     @Test
-    void testRestoreObjectOnTopLevelFromStream() throws URISyntaxException, IOException {
+    void testRestoreObjectOnTopLevelFromStream() throws Exception {
         ModelContext context = modelstore.createContext();
         JsonFactory jsonFactory = new JsonFactory();
         JsonPropertysetPersister persister = new JsonPropertysetPersister(jsonFactory, valueCreator);
@@ -482,11 +464,11 @@ class JsonPropertysetPersisterTest {
      * Not actually a unit test.  Just a convenient way to create a new
      * {@link Propertyset} with an unique id and write it to the console.
      *
-     * @throws IOException
+     * @throws Exception
      */
     @Deactivate
     @Test
-    void generatePropertysetWithId() throws IOException { // NOSONAR not really a unit test so no need for asserts
+    void generatePropertysetWithId() throws Exception { // NOSONAR not really a unit test so no need for asserts
         ModelContext context = modelstore.getDefaultContext();
         context.findPropertyset(UUID.randomUUID());
         context.findPropertyset(UUID.randomUUID());
@@ -502,11 +484,11 @@ class JsonPropertysetPersisterTest {
      * Not actually a unit test.  Generates a simple model
      * with 10 interconnected nodes and outputs JSON for the model.
      *
-     * @throws IOException
+     * @throws Exception
      */
     @Deactivate
     @Test
-    void generateSimpleModel() throws IOException { // NOSONAR not really a unit test so no need for asserts
+    void generateSimpleModel() throws Exception { // NOSONAR not really a unit test so no need for asserts
         ModelContext context = modelstore.createContext();
         Propertyset modelAspect = context.findPropertyset(modelstore.getModelAspectId());
         Propertyset generalObjectAspect = context.findPropertyset(modelstore.getGeneralObjectAspectId());

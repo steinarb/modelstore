@@ -50,7 +50,7 @@ class ModelContextImplTest {
      * @throws IOException
      */
     @Test
-    void testMergeNoOverlapBetweenContexts() throws IOException {
+    void testMergeNoOverlapBetweenContexts() throws Exception {
         ModelContext context = new ModelContextImpl(modelstore);
         buildPropertysetA(context, UUID.randomUUID());
         assertEquals(1, context.listAllPropertysets().size(), "Expected context to contain 1 propertyset");
@@ -95,7 +95,7 @@ class ModelContextImplTest {
      * @throws InterruptedException
      */
     @Test
-    void testMergeWithOverlapBetweenContexts() throws IOException, InterruptedException {
+    void testMergeWithOverlapBetweenContexts() throws Exception {
         var context = new ModelContextImpl(modelstore);
         var aId = UUID.randomUUID();
         buildPropertysetA(context, aId);

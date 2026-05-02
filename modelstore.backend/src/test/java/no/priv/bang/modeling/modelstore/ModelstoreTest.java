@@ -61,10 +61,10 @@ class ModelstoreTest {
     /**
      * Test saving a {@link ModelContext} to a file stream
      * and then restoring the file into a different context.
-     * @throws IOException
+     * @throws Exception
      */
     @Test
-    void testPersistRestoreModelContext() throws IOException { // NOSONAR assert inside compareAllPropertysets
+    void testPersistRestoreModelContext() throws Exception { // NOSONAR assert inside compareAllPropertysets
         var modelstore = new ModelstoreProvider();
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
@@ -92,7 +92,7 @@ class ModelstoreTest {
      * @throws IOException
      */
     @Test
-    void testPersistRestoreModelContextUsingPipedStreams() throws IOException { // NOSONAR assert inside compareAllPropertysets
+    void testPersistRestoreModelContextUsingPipedStreams() throws Exception { // NOSONAR assert inside compareAllPropertysets
         var modelstore = new ModelstoreProvider();
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
@@ -128,7 +128,7 @@ class ModelstoreTest {
      * @throws InterruptedException
      */
     @Test
-    void testLogMultithreading() throws IOException, InterruptedException {
+    void testLogMultithreading() throws Exception {
         final var modelstore = new ModelstoreProvider();
 
         var other = new Thread(new Runnable() {

@@ -220,7 +220,7 @@ class ModelContextTest {
     }
 
     @Test
-    void experimentalJacksonPersist() throws IOException {
+    void experimentalJacksonPersist() throws Exception {
         var modelstore = new ModelstoreProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
@@ -245,7 +245,7 @@ class ModelContextTest {
     }
 
     @Test
-    void testJsonGeneratorWithReference() throws IOException {
+    void testJsonGeneratorWithReference() throws Exception {
         // Create two propertysets with ids, and make a reference to propertyset
         // "b" from propertyset "a".
         var modelstore = new ModelstoreProvider();
@@ -292,7 +292,7 @@ class ModelContextTest {
      * @throws IOException
      */
     @Test
-    void testMergeNoOverlapBetweenContexts() throws IOException {
+    void testMergeNoOverlapBetweenContexts() throws Exception {
         var modelstore = new ModelstoreProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
@@ -331,7 +331,7 @@ class ModelContextTest {
      * @throws InterruptedException
      */
     @Test
-    void testMergeWithOverlapBetweenContexts() throws IOException {
+    void testMergeWithOverlapBetweenContexts() throws Exception {
         var modelstore = new ModelstoreProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
