@@ -2,8 +2,6 @@ package no.priv.bang.modeling.modelstore.backend;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import no.priv.bang.modeling.modelstore.services.ModelContext;
@@ -20,7 +18,7 @@ public class ModelContexts {
 
     public static ModelContext findWrappedModelContext(ModelContext modelcontext) {
         if (modelcontext instanceof ModelContextRecordingMetadata) {
-            ModelContextRecordingMetadata outer = (ModelContextRecordingMetadata) modelcontext;
+            var outer = (ModelContextRecordingMetadata) modelcontext;
             return outer.getWrappedModelContext();
         }
 
@@ -62,21 +60,21 @@ public class ModelContexts {
             return; // nothing to merge with, context is unchanged
         }
 
-        Collection<UUID> propertysetIds = findPropertysetIds(context.listAllPropertysets());
-        for (Propertyset propertyset : otherContext.listAllPropertysets()) {
-            UUID propertysetId = propertyset.getId();
+        var propertysetIds = findPropertysetIds(context.listAllPropertysets());
+        for (var propertyset : otherContext.listAllPropertysets()) {
+            var propertysetId = propertyset.getId();
             if (!metadataId.equals(propertysetId)) {
                 if (!propertysetIds.contains(propertysetId)) {
                     addMissingPropertysetToContext(context, propertysetId, propertyset);
                 } else {
                     // Merge the properties, let most recently modified propertyset overwrite values with the same name in the other propertyset
-                    Propertyset contextPropertyset = context.findPropertyset(propertysetId);
-                    Date contextPropertysetLastmodifiedtime = context.getLastmodifieddate(contextPropertyset);
-                    Date otherContextPropertysetLastModifiedTime = otherContext.getLastmodifieddate(propertyset);
+                    var contextPropertyset = context.findPropertyset(propertysetId);
+                    var contextPropertysetLastmodifiedtime = context.getLastmodifieddate(contextPropertyset);
+                    var otherContextPropertysetLastModifiedTime = otherContext.getLastmodifieddate(propertyset);
                     if (otherContextPropertysetLastModifiedTime.compareTo(contextPropertysetLastmodifiedtime) >= 0) {
                         contextPropertyset.copyValues(propertyset);
                     } else {
-                        Propertyset savedOriginalValues = context.createPropertyset();
+                        var savedOriginalValues = context.createPropertyset();
                         savedOriginalValues.copyValues(contextPropertyset);
                         contextPropertyset.copyValues(propertyset);
                         contextPropertyset.copyValues(savedOriginalValues); // overwrite with original
@@ -87,14 +85,14 @@ public class ModelContexts {
     }
 
     private static void addMissingPropertysetToContext(ModelContext context, UUID propertysetId, Propertyset propertyset) {
-        Propertyset newPropertyset = context.findPropertyset(propertysetId);
+        var newPropertyset = context.findPropertyset(propertysetId);
         newPropertyset.copyValues(propertyset);
     }
 
     private static Collection<UUID> findPropertysetIds(Collection<Propertyset> propertysets) {
-        List<UUID> propertysetIds = new ArrayList<>(propertysets.size()-1);
-        for (Propertyset propertyset : propertysets) {
-            UUID propertysetId = propertyset.getId();
+        var propertysetIds = new ArrayList<UUID>(propertysets.size()-1);
+        for (var propertyset : propertysets) {
+            var propertysetId = propertyset.getId();
             if (!metadataId.equals(propertysetId)) {
                 propertysetIds.add(propertysetId);
             }

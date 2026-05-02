@@ -66,7 +66,7 @@ public class ValueCreatorProvider implements ValueCreator {
     @Override
     public Propertyset unwrapPropertyset(Propertyset propertyset) {
         if (propertyset instanceof PropertysetRecordingSaveTime) {
-            PropertysetRecordingSaveTime wrapper = (PropertysetRecordingSaveTime) propertyset;
+            var wrapper = (PropertysetRecordingSaveTime) propertyset;
             return wrapper.getPropertyset();
         }
 

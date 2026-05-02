@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.UUID;
 
@@ -19,7 +17,6 @@ import org.junit.jupiter.api.io.TempDir;
 import com.fasterxml.jackson.core.JsonFactory;
 
 import no.priv.bang.modeling.modelstore.services.ModelContext;
-import no.priv.bang.modeling.modelstore.services.Propertyset;
 import no.priv.bang.modeling.modelstore.value.ValueCreatorProvider;
 
 /**
@@ -58,8 +55,8 @@ class ModelContextImplTest {
         buildPropertysetA(context, UUID.randomUUID());
         assertEquals(1, context.listAllPropertysets().size(), "Expected context to contain 1 propertyset");
 
-        ModelContext otherContext = new ModelContextImpl(modelstore);
-        UUID bId = UUID.randomUUID();
+        var otherContext = new ModelContextImpl(modelstore);
+        var bId = UUID.randomUUID();
         buildPropertysetB(otherContext, bId);
         assertEquals(1, otherContext.listAllPropertysets().size(), "Expected otherContext to contain 1 propertyset");
 
@@ -67,18 +64,18 @@ class ModelContextImplTest {
         assertEquals(2, context.listAllPropertysets().size(), "Expected context to contain 2 propertysets");
         // Verify that the copied "B" is the same as the original B
         // TODO decide if PropertysetRecordingSaveTime.equals() should include the context in comparison, for now: get the inner PropertysetImpl instances and compare them instead
-        Propertyset originalB = valueCreator.unwrapPropertyset(otherContext.findPropertyset(bId));
-        Propertyset mergedB = valueCreator.unwrapPropertyset(context.findPropertyset(bId));
+        var originalB = valueCreator.unwrapPropertyset(otherContext.findPropertyset(bId));
+        var mergedB = valueCreator.unwrapPropertyset(context.findPropertyset(bId));
         assertEquals(originalB, mergedB);
 
         // Save and restore the merged context and verify that the restored context is the same as the merged context
-        File propertysetsFile = new File(folder, "mergedcontext.json");
-        OutputStream saveStream = Files.newOutputStream(propertysetsFile.toPath());
-        JsonFactory factory = new JsonFactory();
-        JsonPropertysetPersister persister = new JsonPropertysetPersister(factory, valueCreator);
+        var propertysetsFile = new File(folder, "mergedcontext.json");
+        var saveStream = Files.newOutputStream(propertysetsFile.toPath());
+        var factory = new JsonFactory();
+        var persister = new JsonPropertysetPersister(factory, valueCreator);
         persister.persist(saveStream, context);
-        InputStream loadStream = Files.newInputStream(propertysetsFile.toPath());
-        ModelContext restoredContext = new ModelContextImpl(modelstore);
+        var loadStream = Files.newInputStream(propertysetsFile.toPath());
+        var restoredContext = new ModelContextImpl(modelstore);
         persister.restore(loadStream, restoredContext);
         compareAllPropertysets(context, restoredContext);
     }
@@ -99,16 +96,16 @@ class ModelContextImplTest {
      */
     @Test
     void testMergeWithOverlapBetweenContexts() throws IOException, InterruptedException {
-        ModelContext context = new ModelContextImpl(modelstore);
-        UUID aId = UUID.randomUUID();
+        var context = new ModelContextImpl(modelstore);
+        var aId = UUID.randomUUID();
         buildPropertysetA(context, aId);
         assertEquals(1, context.listAllPropertysets().size(), "Expected context to contain 1 propertyset");
 
-        ModelContext otherContext = new ModelContextImpl(modelstore);
-        UUID bId = UUID.randomUUID();
+        var otherContext = new ModelContextImpl(modelstore);
+        var bId = UUID.randomUUID();
         buildPropertysetA(otherContext, aId);
         otherContext.findPropertyset(aId).setLongProperty("value", 42);
-        Propertyset generalObjectAspect = otherContext.findPropertyset(generalObjectAspectId);
+        var generalObjectAspect = otherContext.findPropertyset(generalObjectAspectId);
         otherContext.findPropertyset(aId).addAspect(generalObjectAspect);
         buildPropertysetB(otherContext, bId);
         otherContext.findPropertyset(bId).addAspect(generalObjectAspect);
@@ -116,7 +113,7 @@ class ModelContextImplTest {
 
         buildPropertysetB(context, bId);
         context.findPropertyset(bId).setLongProperty("value", 4); // Change the value, should be kept after merge
-        Propertyset modelAspect = context.findPropertyset(modelAspectId);
+        var modelAspect = context.findPropertyset(modelAspectId);
         context.findPropertyset(bId).addAspect(modelAspect);
         assertEquals(2, context.listAllPropertysets().size(), "Expected context to contain 2 propertysets");
 
@@ -136,13 +133,13 @@ class ModelContextImplTest {
         assertEquals(generalObjectAspectId, context.findPropertyset(bId).getAspects().get(1).asReference().getId());
 
         // Save and restore the merged context and verify that the restored context is the same as the merged context
-        File propertysetsFile = new File(folder, "mergedcontext.json");
-        OutputStream saveStream = Files.newOutputStream(propertysetsFile.toPath());
-        JsonFactory factory = new JsonFactory();
-        JsonPropertysetPersister persister = new JsonPropertysetPersister(factory, valueCreator);
+        var propertysetsFile = new File(folder, "mergedcontext.json");
+        var saveStream = Files.newOutputStream(propertysetsFile.toPath());
+        var factory = new JsonFactory();
+        var persister = new JsonPropertysetPersister(factory, valueCreator);
         persister.persist(saveStream, context);
-        InputStream loadStream = Files.newInputStream(propertysetsFile.toPath());
-        ModelContext restoredContext = new ModelContextImpl(modelstore);
+        var loadStream = Files.newInputStream(propertysetsFile.toPath());
+        var restoredContext = new ModelContextImpl(modelstore);
         persister.restore(loadStream, restoredContext);
         compareAllPropertysets(context, restoredContext);
     }
@@ -152,7 +149,7 @@ class ModelContextImplTest {
      */
     @Test
     void testHashCode() {
-        ModelContext context = new ModelContextImpl(modelstore);
+        var context = new ModelContextImpl(modelstore);
         assertEquals(216866173, context.hashCode());
         addPropertysetsToContext(context);
         assertEquals(-1809752513, context.hashCode());
@@ -163,12 +160,12 @@ class ModelContextImplTest {
      */
     @Test
     void testEquals() {
-        ModelContext context = new ModelContextImpl(modelstore);
+        var context = new ModelContextImpl(modelstore);
         addPropertysetsToContext(context);
         assertEquals(context, context);
         assertNotEquals(context, null); // NOSONAR the point here is to test propertyset.equals, so no the arguments should not be swapped
         assertNotEquals(context, valueCreator.newPropertyset());
-        ModelContext identicalContext = new ModelContextImpl(modelstore);
+        var identicalContext = new ModelContextImpl(modelstore);
         addPropertysetsToContext(identicalContext);
         assertEquals(context, identicalContext);
     }
@@ -178,26 +175,26 @@ class ModelContextImplTest {
      */
     @Test
     void testToString() {
-        ModelContext context = new ModelContextImpl(modelstore);
+        var context = new ModelContextImpl(modelstore);
         addPropertysetsToContext(context);
         assertThat(context.toString()).startsWith("ModelContextImpl ");
     }
 
     private void addPropertysetsToContext(ModelContext context) {
-        UUID aId = UUID.fromString("481f1eda-2acc-4d8e-8618-c29534408e2e");
+        var aId = UUID.fromString("481f1eda-2acc-4d8e-8618-c29534408e2e");
         buildPropertysetA(context, aId);
-        UUID bId = UUID.fromString("018bbff7-369a-4dfd-8e02-92fcc581819d");
+        var bId = UUID.fromString("018bbff7-369a-4dfd-8e02-92fcc581819d");
         buildPropertysetB(context, bId);
     }
 
     private void buildPropertysetA(ModelContext context, UUID aId) {
-        Propertyset propertyset1 = context.findPropertyset(aId);
+        var propertyset1 = context.findPropertyset(aId);
         propertyset1.setStringProperty("name", "a");
         propertyset1.setDoubleProperty("value", 2.1);
     }
 
     private void buildPropertysetB(ModelContext context, UUID bId) {
-        Propertyset propertyset1 = context.findPropertyset(bId);
+        var propertyset1 = context.findPropertyset(bId);
         propertyset1.setStringProperty("name", "b");
         propertyset1.setDoubleProperty("value", 1.2);
     }

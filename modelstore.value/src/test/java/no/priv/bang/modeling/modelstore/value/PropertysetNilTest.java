@@ -30,7 +30,7 @@ class PropertysetNilTest {
      */
     @Test
     void testGetPropertyNames() {
-        Propertyset nilPropertyset = getNilPropertyset();
+        var nilPropertyset = getNilPropertyset();
         assertEquals(0, nilPropertyset.getPropertynames().size());
     }
 
@@ -41,7 +41,7 @@ class PropertysetNilTest {
     @Test
     void testGetSetGetProperty() {
         var nilPropertyset = valueCreator.getNilPropertyset();
-        Propertyset propertyset = new PropertysetImpl();
+        var propertyset = new PropertysetImpl();
         propertyset.setStringProperty("string", "this is stringvalue");
         assertEquals(getNil(), nilPropertyset.getProperty("nomatter"));
 
@@ -96,7 +96,7 @@ class PropertysetNilTest {
     @Test
     void testAspects() {
         var nilPropertyset = valueCreator.getNilPropertyset();
-        Propertyset propertyset = new PropertysetImpl();
+        var propertyset = new PropertysetImpl();
         propertyset.setStringProperty("string", "this is stringvalue");
 
         assertFalse(nilPropertyset.hasAspect());
@@ -116,7 +116,7 @@ class PropertysetNilTest {
     @Test
     void testEquals() {
         var nilPropertyset = valueCreator.getNilPropertyset();
-        Propertyset propertyset = new PropertysetImpl();
+        var propertyset = new PropertysetImpl();
 
         assertEquals(nilPropertyset, nilPropertyset);
         assertNotEquals(nilPropertyset, null); // NOSONAR the point here is to test propertyset.equals, so no the arguments should not be swapped

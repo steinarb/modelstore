@@ -37,7 +37,7 @@ public class JsonPropertysetPersister {
     }
 
     public void persist(File propertysetsFile, ModelContext modelContext) throws IOException {
-        JsonGenerator generator = new JsonGeneratorWithReferences(factory.createGenerator(propertysetsFile, JsonEncoding.UTF8));
+        var generator = new JsonGeneratorWithReferences(factory.createGenerator(propertysetsFile, JsonEncoding.UTF8));
         outputPropertySets(generator, modelContext.listAllPropertysets());
     }
 
@@ -58,14 +58,14 @@ public class JsonPropertysetPersister {
 
     public void restore(File propertysetsFile, ModelContext modelContext) throws IOException {
         if (propertysetsFile != null) {
-            JsonParser parser = factory.createParser(propertysetsFile);
+            var parser = factory.createParser(propertysetsFile);
             parseUntilEnd(modelContext, parser);
         }
     }
 
     public void restore(InputStream jsonstream, ModelContext context) {
         try {
-            JsonParser parser = factory.createParser(jsonstream);
+            var parser = factory.createParser(jsonstream);
             parseUntilEnd(context, parser);
         } catch (Exception e) {
             context.logError("Caught exception parsing a JSON file", jsonstream, e);
@@ -85,7 +85,7 @@ public class JsonPropertysetPersister {
 
         generator.useDefaultPrettyPrinter();
         generator.writeStartArray();
-        for (Propertyset propertyset : propertysets) {
+        for (var propertyset : propertysets) {
             outputPropertyset(generator, propertyset);
         }
 
@@ -96,9 +96,9 @@ public class JsonPropertysetPersister {
     private void outputPropertyset(JsonGenerator generator, Propertyset propertyset) throws IOException {
         generator.writeStartObject();
         propertyset.getPropertynames();
-        Collection<String> propertynames = propertyset.getPropertynames();
-        for (String propertyname : propertynames) {
-            Value value = propertyset.getProperty(propertyname);
+        var propertynames = propertyset.getPropertynames();
+        for (var propertyname : propertynames) {
+            var value = propertyset.getProperty(propertyname);
             outputValue(generator, propertyname, value);
         }
 
@@ -122,10 +122,10 @@ public class JsonPropertysetPersister {
             generator.writeBooleanField(propertyname, value.asBoolean());
         } else if (value.isComplexProperty()) {
             generator.writeFieldName(propertyname);
-            Propertyset complexValue = value.asComplexProperty();
+            var complexValue = value.asComplexProperty();
             outputPropertyset(generator, complexValue);
         } else if (value.isList()) {
-            ValueList listvalue = value.asList();
+            var listvalue = value.asList();
             generator.writeFieldName(propertyname);
             outputArray(generator, listvalue);
         }
@@ -133,7 +133,7 @@ public class JsonPropertysetPersister {
 
     private void outputArray(JsonGenerator generator, ValueList listvalue) throws IOException {
         generator.writeStartArray();
-        for (Value listElement : listvalue) {
+        for (var listElement : listvalue) {
             if (listElement.isReference()) {
                 generator.writeObjectRef(listElement.asReference().getId());
             } else if (listElement.isString()) {
@@ -156,7 +156,7 @@ public class JsonPropertysetPersister {
 
     private void parseUntilEnd(ModelContext modelContext, JsonParser parser) throws IOException {
         while (parser.nextToken() != null) {
-            JsonToken currentToken = parser.getCurrentToken();
+            var currentToken = parser.getCurrentToken();
             if (currentToken == JsonToken.START_ARRAY) {
                 parseArray(parser, modelContext);
             } else if (currentToken == JsonToken.START_OBJECT) {
@@ -168,7 +168,7 @@ public class JsonPropertysetPersister {
     private Value parseArray(JsonParser parser, ModelContext modelContext) throws IOException {
         ValueList propertyList = valueCreator.newValueList();
         while (parser.nextToken() != JsonToken.END_ARRAY) {
-            JsonToken currentToken = parser.getCurrentToken();
+            var currentToken = parser.getCurrentToken();
             if (currentToken == JsonToken.VALUE_STRING) {
                 propertyList.add(valueCreator.fromString(parser.getText()));
             } else if (currentToken == JsonToken.VALUE_NUMBER_FLOAT) {
@@ -216,14 +216,14 @@ public class JsonPropertysetPersister {
 
     private Propertyset parseObjectReference(JsonParser parser, ModelContext modelContext) throws IOException {
         parser.nextToken();
-        String refValue = parser.getText();
-        UUID refId = UUID.fromString(refValue);
+        var refValue = parser.getText();
+        var refId = UUID.fromString(refValue);
 
         // Note: This will create an empty placeholder if the referenced object
         // hasn't been parsed yet.
         // When the referenced object is parsed it will retrieve the same
         // placeholder and start filling in its properties.
-        Propertyset referencedPropertyset = modelContext.findPropertyset(refId);
+        var referencedPropertyset = modelContext.findPropertyset(refId);
 
         // Complete the object, by consuming the END_OBJECT before returning
         parser.nextToken();
@@ -233,13 +233,13 @@ public class JsonPropertysetPersister {
     private Propertyset parseIdProperty(JsonParser parser, ModelContext modelContext, Propertyset propertyset)
         throws IOException {
         parser.nextToken();
-        String idValue = parser.getText();
-        UUID id = UUID.fromString(idValue);
+        var idValue = parser.getText();
+        var id = UUID.fromString(idValue);
         if (propertyset == null) {
             propertyset = modelContext.findPropertyset(id);
         } else {
             // Need to copy existing properties parsed earlier
-            Propertyset complexvalue = propertyset;
+            var complexvalue = propertyset;
             propertyset = modelContext.findPropertyset(id);
             propertyset.copyValues(complexvalue);
         }
@@ -249,21 +249,25 @@ public class JsonPropertysetPersister {
     private Propertyset parsingAspectProperty(JsonParser parser, ModelContext modelContext, Propertyset propertyset)
         throws IOException {
         parser.nextToken();
-        JsonToken currentToken = parser.getCurrentToken();
+        var currentToken = parser.getCurrentToken();
         if (currentToken == JsonToken.START_ARRAY) {
             propertyset = createPropertysetIfNull(propertyset);
-            Value aspects = parseArray(parser, modelContext);
-            for (Value aspectValue : aspects.asList()) {
+            var aspects = parseArray(parser, modelContext);
+            for (var aspectValue : aspects.asList()) {
                 propertyset.addAspect(aspectValue.asReference());
             }
         }
         return propertyset;
     }
 
-    private Propertyset parsingAllOrdinaryPropertiesOfAPropertyset(JsonParser parser, ModelContext modelContext,
-                                                                   Propertyset propertyset, String currentFieldName) throws IOException {
+    private Propertyset parsingAllOrdinaryPropertiesOfAPropertyset(
+        JsonParser parser,
+        ModelContext modelContext,
+        Propertyset propertyset,
+        String currentFieldName
+    ) throws IOException {
         parser.nextToken();
-        JsonToken currentToken = parser.getCurrentToken();
+        var currentToken = parser.getCurrentToken();
         if (currentToken == JsonToken.VALUE_STRING) {
             propertyset = createPropertysetIfNull(propertyset);
             propertyset.setStringProperty(currentFieldName, parser.getText());

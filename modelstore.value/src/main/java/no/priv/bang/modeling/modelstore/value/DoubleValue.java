@@ -29,12 +29,12 @@ class DoubleValue extends ValueBase {
     }
 
     public Boolean asBoolean() {
-        double floatValue = value.doubleValue();
+        var floatValue = value.doubleValue();
         return floatValue != 0.0;
     }
 
     public Long asLong() {
-        double floatValue = value.doubleValue();
+        var floatValue = value.doubleValue();
         return Math.round(floatValue);
     }
 
@@ -60,8 +60,8 @@ class DoubleValue extends ValueBase {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
+        final var prime = 31;
+        var result = 1;
         result = prime * result + value.hashCode();
         return result;
     }

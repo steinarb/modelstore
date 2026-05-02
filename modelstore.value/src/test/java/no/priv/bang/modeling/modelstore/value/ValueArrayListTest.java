@@ -26,10 +26,10 @@ class ValueArrayListTest {
         assertEquals(0, list.size());
         list.add(toStringValue("a"));
         list.add(toLongValue(4L));
-        Propertyset propertyset = valueCreator.newPropertyset();
+        var propertyset = valueCreator.newPropertyset();
         propertyset.setStringProperty("a", "foo bar");
         list.add(propertyset);
-        ValueList listelement = newList();
+        var listelement = newList();
         listelement.add("foo");
         list.add(listelement);
         assertEquals(4, list.size());
@@ -44,7 +44,7 @@ class ValueArrayListTest {
         assertEquals(getNilPropertyset(), list.get(3).asComplexProperty());
 
         // Verify deep copy for Propertysets and lists
-        ValueList addlist = newList();
+        var addlist = newList();
         addlist.add(list.get(1)); // Complex value
         addlist.add(list.get(2));
         addlist.get(0).asComplexProperty().setStringProperty("a", "bar foo");
@@ -53,7 +53,7 @@ class ValueArrayListTest {
         addlist.get(1).asList().add("bar");
         assertEquals(2, addlist.get(1).asList().size());
         assertEquals(1, list.get(2).asList().size(), "Expected original to be unchanged");
-        ValueList setlist = newList();
+        var setlist = newList();
         setlist.add(true);
         setlist.add(true); // Just add something to be able to set index 0 and 1
         setlist.set(0, list.get(1));
@@ -71,7 +71,7 @@ class ValueArrayListTest {
      */
     @Test
     void testAddSetGetBoolean() {
-        ValueList list = newList();
+        var list = newList();
         assertEquals(0, list.size());
         list.add(Boolean.TRUE);
         list.add(true);
@@ -88,7 +88,7 @@ class ValueArrayListTest {
      */
     @Test
     void testAddSetGetLong() {
-        ValueList list = newList();
+        var list = newList();
         assertEquals(0, list.size());
         list.add(Long.valueOf(1));
         list.add(2L);
@@ -105,7 +105,7 @@ class ValueArrayListTest {
      */
     @Test
     void testAddSetGetDouble() {
-        ValueList list = newList();
+        var list = newList();
         assertEquals(0, list.size());
         list.add(Double.valueOf(1.0));
         list.add(2.0);
@@ -122,7 +122,7 @@ class ValueArrayListTest {
      */
     @Test
     void testAddSetGetString() {
-        ValueList list = newList();
+        var list = newList();
         assertEquals(0, list.size());
         list.add("foo");
         list.add("bar");
@@ -145,14 +145,14 @@ class ValueArrayListTest {
     @Test
     void testAddSetGetPropertyset() {
         var valueCreator = new ValueCreatorProvider();
-        Propertyset objectWithoutId = valueCreator.newPropertyset();
+        var objectWithoutId = valueCreator.newPropertyset();
         objectWithoutId.setDoubleProperty("c", 3.14);
-        UUID id = UUID.randomUUID();
-        Propertyset objectWithId = valueCreator.newPropertyset(id);
+        var id = UUID.randomUUID();
+        var objectWithId = valueCreator.newPropertyset(id);
         objectWithId.setLongProperty("a", Long.valueOf(2));
         objectWithId.setStringProperty("b", "foo bar");
         Propertyset nullObject = null;
-        ValueList list = newList();
+        var list = newList();
         assertEquals(0, list.size());
         list.add(objectWithoutId);
         list.add(objectWithId);
@@ -168,12 +168,12 @@ class ValueArrayListTest {
         assertTrue(list.get(2).isReference());
 
         // Verify deep copy of propertysets in add and set
-        ValueList otherlist = newList();
+        var otherlist = newList();
         otherlist.add(list.get(1).asComplexProperty());
         otherlist.get(0).asComplexProperty().setDoubleProperty("c", 3.78);
         assertEquals(3.78, otherlist.get(0).asComplexProperty().getDoubleProperty("c"), 0.0);
         assertEquals(3.14, list.get(1).asComplexProperty().getDoubleProperty("c"), 0.0, "Expected original value to be unchanged");
-        ValueList otherlist2 = newList();
+        var otherlist2 = newList();
         otherlist2.add(true); // Dummy add to get a settable position in the list
         otherlist2.set(0, list.get(1).asComplexProperty());
         otherlist2.get(0).asComplexProperty().setDoubleProperty("c", 2.78);
@@ -189,17 +189,17 @@ class ValueArrayListTest {
      */
     @Test
     void testAddSetGetValueList() {
-        ValueList value1 = newList();
+        var value1 = newList();
         value1.add(3.14);
         value1.add(2.78);
         value1.add("foo");
-        ValueList value2 = newList();
+        var value2 = newList();
         value2.add(true);
         value2.add(false);
         ValueList nullList = null;
 
         // Create the list and insert lists into the list
-        ValueList list = newList();
+        var list = newList();
         assertEquals(0, list.size());
         list.add(value1);
         list.add(value2);
@@ -216,7 +216,7 @@ class ValueArrayListTest {
         assertEquals(2, list.get(2).asList().size());
 
         // Verify deep copy of lists in add and set
-        ValueList otherlist = newList();
+        var otherlist = newList();
         otherlist.add(list.get(1).asList());
         otherlist.add(true); // Dummy add to get a settable position in the list
         otherlist.set(1, list.get(2).asList());
@@ -234,11 +234,11 @@ class ValueArrayListTest {
     @Test
     void testCopyConstructor() {
         var valueCreator = new ValueCreatorProvider();
-        UUID id = UUID.randomUUID();
-        ValueList original = newList();
+        var id = UUID.randomUUID();
+        var original = newList();
         populateList(original, valueCreator, id);
 
-        ValueList copy = new ValueArrayList(original);
+        var copy = new ValueArrayList(original);
         assertNotSame(original, copy); // Obviously...
         assertEquals(original, copy);
 
@@ -254,8 +254,8 @@ class ValueArrayListTest {
         assertEquals(2.7, original.get(2).asDouble(), 0.0, "Expected original to be unchanged");
         copy.set(3, "bar foo");
         assertEquals("bar foo", copy.get(3).asString());
-        Propertyset originalReference = copy.get(4).asReference();
-        Propertyset newReference = valueCreator.newPropertyset(UUID.randomUUID());
+        var originalReference = copy.get(4).asReference();
+        var newReference = valueCreator.newPropertyset(UUID.randomUUID());
         copy.set(4, newReference);
         assertEquals(newReference, copy.get(4).asReference());
         assertEquals(originalReference, original.get(4).asReference(), "Expected original to be unchanged");
@@ -273,13 +273,13 @@ class ValueArrayListTest {
         list.add(2.7);
         list.add("foo bar");
         list.add(valueCreator.newPropertyset(id));
-        Propertyset propertyset = valueCreator.newPropertyset();
+        var propertyset = valueCreator.newPropertyset();
         propertyset.setBooleanProperty("a", true);
         propertyset.setLongProperty("b", 47);
         propertyset.setDoubleProperty("c", 3.14);
         propertyset.setStringProperty("d", "bar foo");
         list.add(propertyset);
-        ValueList listAsElement = newList();
+        var listAsElement = newList();
         listAsElement.add("foo");
         list.add(listAsElement);
     }
@@ -289,7 +289,7 @@ class ValueArrayListTest {
      */
     @Test
     void testHashCode() {
-        ValueList list = newList();
+        var list = newList();
         assertEquals(32, list.hashCode());
         list.add(toLongValue(1L));
         assertEquals(2016, list.hashCode());
@@ -300,16 +300,16 @@ class ValueArrayListTest {
      */
     @Test
     void testEquals() {
-        ValueList list = newList();
+        var list = newList();
         assertEquals(list, list);
         assertNotEquals(list, null); // NOSONAR the point here is to test propertyset.equals, so no the arguments should not be swapped
-        ValueList emptylist = newList();
+        var emptylist = newList();
         assertEquals(list, emptylist);
         assertNotEquals(list, getNil().asList());
         assertNotEquals(list, new EmptyValueList());
         list.add(toLongValue(1L));
         assertNotEquals(list, emptylist);
-        ValueList otherlistWithSameItem = newList();
+        var otherlistWithSameItem = newList();
         otherlistWithSameItem.add(toLongValue(1L));
         assertEquals(list, otherlistWithSameItem);
     }

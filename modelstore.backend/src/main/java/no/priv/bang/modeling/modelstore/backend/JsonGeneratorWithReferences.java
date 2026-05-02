@@ -3,7 +3,6 @@ package no.priv.bang.modeling.modelstore.backend;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.JsonGeneratorDelegate;
 
 /**
@@ -29,7 +28,7 @@ public class JsonGeneratorWithReferences extends JsonGeneratorDelegate {
     @Override
     public void writeObjectRef(Object id) throws IOException {
         // "compact" the object reference, even when using pretty printing
-        PrettyPrinter prettyPrinter = getPrettyPrinter();
+        var prettyPrinter = getPrettyPrinter();
         setPrettyPrinter(null);
         writeStartObject();
         writeStringField("ref", id.toString());

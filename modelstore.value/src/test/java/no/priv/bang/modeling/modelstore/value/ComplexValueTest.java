@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import no.priv.bang.modeling.modelstore.services.Propertyset;
 import no.priv.bang.modeling.modelstore.services.Value;
-import no.priv.bang.modeling.modelstore.services.ValueList;
 
 /**
  * Unit tests for {@link ComplexValue}.
@@ -106,7 +105,7 @@ class ComplexValueTest {
 
     @Test
     void testAsList() {
-        ValueList emptyList = value.asList();
+        var emptyList = value.asList();
         assertTrue(emptyList.isEmpty());
     }
 
@@ -115,7 +114,7 @@ class ComplexValueTest {
      */
     @Test
     void testHashCode() {
-        Value nullComplexValue = toComplexValue(null);
+        var nullComplexValue = toComplexValue(null);
         assertEquals(31, nullComplexValue.hashCode());
         assertEquals(1958288831, value.hashCode());
     }
@@ -125,7 +124,7 @@ class ComplexValueTest {
      */
     @Test
     void testEquals() {
-        Value nullComplexValue = toComplexValue(null);
+        var nullComplexValue = toComplexValue(null);
         assertNotEquals(nullComplexValue, null); // NOSONAR the point here is to test propertyset.equals, so no the arguments should not be swapped
         assertNotEquals(nullComplexValue, getNil().asComplexProperty());
         assertEquals(nullComplexValue, nullComplexValue);
@@ -139,7 +138,7 @@ class ComplexValueTest {
      */
     @Test
     void testToString() {
-        Value nullComplexValue = toComplexValue(null);
+        var nullComplexValue = toComplexValue(null);
         assertEquals("ComplexValue [value=PropertysetNil []]", nullComplexValue.toString());
         assertEquals("ComplexValue [value=PropertysetImpl [properties={boolean=BooleanValue [value=true], string=StringValue [value=foo bar], double=DoubleValue [value=2.78], long=LongValue [value=42]}]]", value.toString());
     }

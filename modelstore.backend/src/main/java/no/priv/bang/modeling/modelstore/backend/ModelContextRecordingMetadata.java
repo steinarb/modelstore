@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import no.priv.bang.modeling.modelstore.services.DateFactory;
@@ -33,7 +32,7 @@ public class ModelContextRecordingMetadata implements ModelContext, Modification
         impl = nonMetadataRecordingContext;
         this.dateFactory = dateFactory;
         this.valueCreator = valueCreator;
-        Propertyset metadata = impl.findPropertyset(metadataId);
+        var metadata = impl.findPropertyset(metadataId);
         setLastmodifiedtimes(metadata);
     }
 
@@ -45,9 +44,9 @@ public class ModelContextRecordingMetadata implements ModelContext, Modification
      * @param metadata a {@link Propertyset} to extract saved last modified times from
      */
     void setLastmodifiedtimes(Propertyset metadata) {
-        Propertyset lastmodifiedtimes = metadata.getComplexProperty("lastmodifiedtimes");
-        for (String uuidAsString : lastmodifiedtimes.getPropertynames()) {
-            String dateAsString = lastmodifiedtimes.getStringProperty(uuidAsString);
+        var lastmodifiedtimes = metadata.getComplexProperty("lastmodifiedtimes");
+        for (var uuidAsString : lastmodifiedtimes.getPropertynames()) {
+            var dateAsString = lastmodifiedtimes.getStringProperty(uuidAsString);
             try {
                 lastmodifiedtime.put(UUID.fromString(uuidAsString), dateFormat.parse(dateAsString));
             } catch (IllegalArgumentException e) {
@@ -75,10 +74,10 @@ public class ModelContextRecordingMetadata implements ModelContext, Modification
     }
 
     public Collection<Propertyset> listAllPropertysets() {
-        Collection<Propertyset> implist = impl.listAllPropertysets();
-        ArrayList<Propertyset> retlist = new ArrayList<>(implist.size() + 1);
+        var implist = impl.listAllPropertysets();
+        var retlist = new ArrayList<Propertyset>(implist.size() + 1);
         retlist.add(createMetadata());
-        for (Propertyset propertyset : implist) {
+        for (var propertyset : implist) {
             if (!metadataId.equals(propertyset.getId())) {
                 retlist.add(propertyset);
             }
@@ -109,8 +108,8 @@ public class ModelContextRecordingMetadata implements ModelContext, Modification
     }
 
     private Propertyset createMetadata() {
-        Propertyset lastmodifiedtimes = impl.createPropertyset();
-        for (Entry<UUID, Date> modifiedtime : lastmodifiedtime.entrySet()) {
+        var lastmodifiedtimes = impl.createPropertyset();
+        for (var modifiedtime : lastmodifiedtime.entrySet()) {
             lastmodifiedtimes.setStringProperty(modifiedtime.getKey().toString(), dateFormat.format(modifiedtime.getValue()));
         }
 
@@ -126,8 +125,8 @@ public class ModelContextRecordingMetadata implements ModelContext, Modification
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
+        final var prime = 31;
+        var result = 1;
         result = prime * result + impl.hashCode();
         result = prime * result + lastmodifiedtime.hashCode();
         return result;
@@ -147,7 +146,7 @@ public class ModelContextRecordingMetadata implements ModelContext, Modification
             return false;
         }
 
-        ModelContextRecordingMetadata other = (ModelContextRecordingMetadata) obj;
+        var other = (ModelContextRecordingMetadata) obj;
         if (!impl.equals(other.impl)) {
             return false;
         }

@@ -37,7 +37,7 @@ class StringValue extends ValueBase {
             return Long.valueOf(value);
         } catch (NumberFormatException e1) {
             try {
-                double doubleValue = Double.parseDouble(value);
+                var doubleValue = Double.parseDouble(value);
                 return Math.round(doubleValue);
             } catch (NumberFormatException e2) {
                 return getNilPropertyset().getLongProperty("dummy");
@@ -71,8 +71,8 @@ class StringValue extends ValueBase {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
+        final var prime = 31;
+        var result = 1;
         result = prime * result + value.hashCode();
         return result;
     }

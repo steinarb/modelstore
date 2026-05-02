@@ -26,8 +26,8 @@ class ComplexValue extends PropertysetValueBase {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
+        final var prime = 31;
+        var result = 1;
         result = prime * result + value.hashCode();
         return result;
     }
@@ -46,7 +46,7 @@ class ComplexValue extends PropertysetValueBase {
             return false;
         }
 
-        PropertysetValueBase other = (PropertysetValueBase) obj;
+        var other = (PropertysetValueBase) obj;
         return value.equals(other.value);
     }
 

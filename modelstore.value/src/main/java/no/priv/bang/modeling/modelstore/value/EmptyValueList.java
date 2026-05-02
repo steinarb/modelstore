@@ -140,8 +140,8 @@ public final class EmptyValueList extends AbstractList<Value> implements ValueLi
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
+        final var prime = 31;
+        var result = super.hashCode();
         result = prime * result + Arrays.hashCode(emptyArray);
         return result;
     }

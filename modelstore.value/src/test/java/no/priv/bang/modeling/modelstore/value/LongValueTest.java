@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import no.priv.bang.modeling.modelstore.services.Value;
-import no.priv.bang.modeling.modelstore.services.ValueList;
 
 /**
  * Unit tests for {@link LongValue}.
@@ -99,7 +98,7 @@ class LongValueTest {
 
     @Test
     void testAsList() {
-        ValueList emptyList = value.asList();
+        var emptyList = value.asList();
         assertTrue(emptyList.isEmpty());
     }
 
@@ -108,7 +107,7 @@ class LongValueTest {
      */
     @Test
     void testHashCode() {
-        Value nullLongValue = toLongValue(null);
+        var nullLongValue = toLongValue(null);
         assertEquals(31, nullLongValue.hashCode());
         assertEquals(73, value.hashCode());
     }
@@ -118,7 +117,7 @@ class LongValueTest {
      */
     @Test
     void testEquals() {
-        Value nullLongValue = toLongValue(null);
+        var nullLongValue = toLongValue(null);
         assertNotEquals(nullLongValue, null); // NOSONAR the point here is to test propertyset.equals, so no the arguments should not be swapped
         assertNotEquals(nullLongValue, getNil());
         assertEquals(nullLongValue, nullLongValue);
@@ -131,7 +130,7 @@ class LongValueTest {
      */
     @Test
     void testToString() {
-        Value nullLongValue = toLongValue(null);
+        var nullLongValue = toLongValue(null);
         assertEquals("LongValue [value=0]", nullLongValue.toString());
         assertEquals("LongValue [value=42]", value.toString());
     }

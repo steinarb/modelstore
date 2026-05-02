@@ -28,8 +28,8 @@ class ValueArrayList extends AbstractList<Value> implements ValueList {
     }
 
     private void deepDefensiveCopyWhenNeeded() {
-        for (int i = 0; i < arrayList.size(); i++) {
-            Value v = arrayList.get(i);
+        for (var i = 0; i < arrayList.size(); i++) {
+            var v = arrayList.get(i);
             if (v.isComplexProperty()) {
                 arrayList.set(i, toComplexValue(v.asComplexProperty()));
             } else if (v.isList()) {
@@ -161,8 +161,8 @@ class ValueArrayList extends AbstractList<Value> implements ValueList {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
+        final var prime = 31;
+        var result = super.hashCode();
         result = prime * result + arrayList.hashCode();
         return result;
     }
@@ -181,7 +181,7 @@ class ValueArrayList extends AbstractList<Value> implements ValueList {
             return false;
         }
 
-        ValueArrayList other = (ValueArrayList) obj;
+        var other = (ValueArrayList) obj;
         return arrayList.equals(other.arrayList);
     }
 

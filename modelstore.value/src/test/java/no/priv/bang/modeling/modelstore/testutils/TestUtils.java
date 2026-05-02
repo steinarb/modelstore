@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 
 import no.priv.bang.modeling.modelstore.services.ModelContext;
 import no.priv.bang.modeling.modelstore.services.Propertyset;
-import no.priv.bang.modeling.modelstore.services.Value;
 
 /**
  * Contains static methods used in more than one unit test.
@@ -36,11 +35,11 @@ public class TestUtils {
      * @param context2 the {@link ModelContext} to compare with
      */
     public static void compareAllPropertysets(ModelContext context, ModelContext context2) {
-        for (Propertyset propertyset : context.listAllPropertysets()) {
-            Propertyset parsedPropertyset = context2.findPropertyset(propertyset.getId());
-            for (String propertyname : propertyset.getPropertynames()) {
-                Value originalValue = propertyset.getProperty(propertyname);
-                Value parsedValue = parsedPropertyset.getProperty(propertyname);
+        for (var propertyset : context.listAllPropertysets()) {
+            var parsedPropertyset = context2.findPropertyset(propertyset.getId());
+            for (var propertyname : propertyset.getPropertynames()) {
+                var originalValue = propertyset.getProperty(propertyname);
+                var parsedValue = parsedPropertyset.getProperty(propertyname);
                 assertEquals(originalValue, parsedValue);
             }
         }

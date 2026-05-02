@@ -1,14 +1,11 @@
 package no.priv.bang.modeling.modelstore.backend;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
@@ -18,7 +15,6 @@ import no.priv.bang.modeling.modelstore.services.DateFactory;
 import no.priv.bang.modeling.modelstore.services.ModelContext;
 import no.priv.bang.modeling.modelstore.services.Modelstore;
 import no.priv.bang.modeling.modelstore.services.Propertyset;
-import no.priv.bang.modeling.modelstore.services.Value;
 import no.priv.bang.modeling.modelstore.services.ValueList;
 
 
@@ -64,8 +60,8 @@ public class ModelContextImpl implements ModelContext {
      * @see no.priv.bang.modeling.modelstore.ModelContext#listAllPropertysets()
      */
     public Collection<Propertyset> listAllPropertysets() {
-        List<Propertyset> allPropertysetsExcludingEmbedded = new ArrayList<>(propertysets.size());
-        for (Propertyset propertyset : propertysets.values()) {
+        var allPropertysetsExcludingEmbedded = new ArrayList<Propertyset>(propertysets.size());
+        for (var propertyset : propertysets.values()) {
             if (!embeddedAspects.contains(propertyset)) {
                 allPropertysetsExcludingEmbedded.add(propertyset);
             }
@@ -78,15 +74,15 @@ public class ModelContextImpl implements ModelContext {
      * @see no.priv.bang.modeling.modelstore.ModelContext#listAllAspects()
      */
     public Collection<Propertyset> listAllAspects() {
-        Set<Propertyset> allAspects = new HashSet<>(embeddedAspects);
-        for (Entry<UUID, Propertyset> propertyset : propertysets.entrySet()) {
+        var allAspects = new HashSet<Propertyset>(embeddedAspects);
+        for (var propertyset : propertysets.entrySet()) {
             if (propertyset.getValue().hasAspect()) {
-                ValueList aspects = propertyset.getValue().getAspects();
-                for (Value value : aspects) {
-                    Propertyset aspect = value.asReference();
+                var aspects = propertyset.getValue().getAspects();
+                for (var value : aspects) {
+                    var aspect = value.asReference();
                     if (!modelstore.getValueCreator().getNilPropertyset().equals(aspect)) {
                         allAspects.add(aspect);
-                        Propertyset baseAspect = aspect.getReferenceProperty("inherits");
+                        var baseAspect = aspect.getReferenceProperty("inherits");
                         if (!modelstore.getValueCreator().getNilPropertyset().equals(baseAspect)) {
                             allAspects.add(baseAspect);
                         }
@@ -102,11 +98,11 @@ public class ModelContextImpl implements ModelContext {
      * @see no.priv.bang.modeling.modelstore.ModelContext#findObjectsOfAspect(no.priv.bang.modeling.modelstore.Propertyset)
      */
     public Collection<Propertyset> findObjectsOfAspect(Propertyset aspect) {
-        List<Propertyset> objectsOfAspect = new ArrayList<>();
-        for (Entry<UUID, Propertyset> propertysetEntry : propertysets.entrySet()) {
-            ValueList aspectList = propertysetEntry.getValue().getListProperty("aspects");
-            for (Value aspectValue : aspectList) {
-                Set<Propertyset> aspectInheritanceChain = followInheritanceChain(aspectValue.asReference());
+        var objectsOfAspect = new ArrayList<Propertyset>();
+        for (var propertysetEntry : propertysets.entrySet()) {
+            var aspectList = propertysetEntry.getValue().getListProperty("aspects");
+            for (var aspectValue : aspectList) {
+                var aspectInheritanceChain = followInheritanceChain(aspectValue.asReference());
                 if (aspectInheritanceChain.contains(aspect)) {
                     objectsOfAspect.add(propertysetEntry.getValue());
                 }
@@ -118,23 +114,23 @@ public class ModelContextImpl implements ModelContext {
 
     private void loadEmbeddedAspects() {
         try {
-            InputStream aspectsFile = getClass().getResourceAsStream("/json/aspects.json");
-            JsonFactory jsonFactory = new JsonFactory();
-            JsonPropertysetPersister persister = new JsonPropertysetPersister(jsonFactory, modelstore.getValueCreator());
+            var aspectsFile = getClass().getResourceAsStream("/json/aspects.json");
+            var jsonFactory = new JsonFactory();
+            var persister = new JsonPropertysetPersister(jsonFactory, modelstore.getValueCreator());
             persister.restore(aspectsFile, this);
             embeddedAspects = new HashSet<>(propertysets.values());
         } catch (Exception e) { /* skip and continue */ }
     }
 
     Set<Propertyset> followInheritanceChain(Propertyset aspect) {
-        Propertyset baseAspect = aspect.getReferenceProperty("inherits");
+        var baseAspect = aspect.getReferenceProperty("inherits");
         if (!modelstore.getValueCreator().getNilPropertyset().equals(baseAspect)) {
-            Set<Propertyset> aspects = followInheritanceChain(baseAspect);
+            var aspects = followInheritanceChain(baseAspect);
             aspects.add(aspect);
             return aspects;
         } else {
             // No more base aspects, create the set and add myself
-            Set<Propertyset> aspects = new HashSet<>();
+            var aspects = new HashSet<Propertyset>();
             aspects.add(aspect);
             return aspects;
         }
@@ -151,8 +147,8 @@ public class ModelContextImpl implements ModelContext {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
+        final var prime = 31;
+        var result = 1;
         result = prime * result + propertysets.hashCode();
         return result;
     }

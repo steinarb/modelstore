@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import no.priv.bang.modeling.modelstore.services.DateFactory;
 import no.priv.bang.modeling.modelstore.services.ModificationRecorder;
 import no.priv.bang.modeling.modelstore.services.Propertyset;
-import no.priv.bang.modeling.modelstore.services.ValueList;
 
 /**
  * Unit tests for {@link PropertysetRecordingSaveTime}.
@@ -49,19 +48,19 @@ class PropertysetRecordingSaveTimeTest {
             .thenReturn(Date.from(instant.plusMillis(10000)))
             .thenReturn(Date.from(instant.plusMillis(11000)));
         recorder = new ModificationRecorder() {
-                Map<UUID, Date> modificationTimes = new HashMap<>();
-                DateFactory datefac = dateFactory;
+            Map<UUID, Date> modificationTimes = new HashMap<>();
+            DateFactory datefac = dateFactory;
 
-                @Override
-                public void modifiedPropertyset(Propertyset propertyset) {
-                    modificationTimes.put(propertyset.getId(), datefac.now());
-                }
+            @Override
+            public void modifiedPropertyset(Propertyset propertyset) {
+                modificationTimes.put(propertyset.getId(), datefac.now());
+            }
 
-                @Override
-                public Date getLastmodifieddate(Propertyset propertyset) {
-                    return modificationTimes.computeIfAbsent(propertyset.getId(), k -> datefac.now());
-                }
-            };
+            @Override
+            public Date getLastmodifieddate(Propertyset propertyset) {
+                return modificationTimes.computeIfAbsent(propertyset.getId(), k -> datefac.now());
+            }
+        };
         inner = valueCreator.newPropertyset(propertysetId );
         propertyset = new PropertysetRecordingSaveTime(recorder, inner);
         addProperties(propertyset);
@@ -117,9 +116,9 @@ class PropertysetRecordingSaveTimeTest {
     @Test
     void testSetProperty() throws InterruptedException {
         // Expected the set value to change the lastmodifiedtime of the propertyset
-        Date lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         propertyset.setProperty("a", Values.toDoubleValue(1.7));
-        Date lastmodifiedTimeAfterSetProperty = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeAfterSetProperty = recorder.getLastmodifieddate(propertyset);
         assertNotEquals(lastmodifiedTimeBeforeSetProperty, lastmodifiedTimeAfterSetProperty);
     }
 
@@ -164,13 +163,13 @@ class PropertysetRecordingSaveTimeTest {
     @Test
     void testSetGetBooleanProperty() throws InterruptedException {
         // Expected the set value to change the lastmodifiedtime of the propertyset
-        Date lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         propertyset.setBooleanProperty("a", Boolean.FALSE);
-        Date lastmodifiedTimeAfterSetProperty1 = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeAfterSetProperty1 = recorder.getLastmodifieddate(propertyset);
         assertNotEquals(lastmodifiedTimeBeforeSetProperty, lastmodifiedTimeAfterSetProperty1);
         assertFalse(propertyset.getBooleanProperty("a"));
         propertyset.setBooleanProperty("a", true);
-        Date lastmodifiedTimeAfterSetProperty2 = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeAfterSetProperty2 = recorder.getLastmodifieddate(propertyset);
         assertNotEquals(lastmodifiedTimeAfterSetProperty1, lastmodifiedTimeAfterSetProperty2);
         assertTrue(propertyset.getBooleanProperty("a"));
     }
@@ -184,13 +183,13 @@ class PropertysetRecordingSaveTimeTest {
     @Test
     void testSetGetLongProperty() throws InterruptedException {
         // Expected the set value to change the lastmodifiedtime of the propertyset
-        Date lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         propertyset.setLongProperty("b", Long.valueOf(128));
-        Date lastmodifiedTimeAfterSetProperty1 = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeAfterSetProperty1 = recorder.getLastmodifieddate(propertyset);
         assertNotEquals(lastmodifiedTimeBeforeSetProperty, lastmodifiedTimeAfterSetProperty1);
         assertEquals(128, propertyset.getLongProperty("b").longValue());
         propertyset.setLongProperty("b", 127);
-        Date lastmodifiedTimeAfterSetProperty2 = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeAfterSetProperty2 = recorder.getLastmodifieddate(propertyset);
         assertNotEquals(lastmodifiedTimeAfterSetProperty1, lastmodifiedTimeAfterSetProperty2);
         assertEquals(127, propertyset.getLongProperty("b").longValue());
     }
@@ -204,13 +203,13 @@ class PropertysetRecordingSaveTimeTest {
     @Test
     void testSetGetDoubleProperty() throws InterruptedException {
         // Expected the set value to change the lastmodifiedtime of the propertyset
-        Date lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         propertyset.setDoubleProperty("c", Double.valueOf(12.8));
-        Date lastmodifiedTimeAfterSetProperty1 = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeAfterSetProperty1 = recorder.getLastmodifieddate(propertyset);
         assertNotEquals(lastmodifiedTimeBeforeSetProperty, lastmodifiedTimeAfterSetProperty1);
         assertEquals(12.8, propertyset.getDoubleProperty("c").doubleValue(), 0.0);
         propertyset.setDoubleProperty("c", 1.27);
-        Date lastmodifiedTimeAfterSetProperty2 = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeAfterSetProperty2 = recorder.getLastmodifieddate(propertyset);
         assertNotEquals(lastmodifiedTimeAfterSetProperty1, lastmodifiedTimeAfterSetProperty2);
         assertEquals(1.27, propertyset.getDoubleProperty("c").doubleValue(), 0.0);
     }
@@ -223,9 +222,9 @@ class PropertysetRecordingSaveTimeTest {
     @Test
     void testSetGetStringProperty() throws InterruptedException {
         // Expected the set value to change the lastmodifiedtime of the propertyset
-        Date lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         propertyset.setStringProperty("d", "abcd");
-        Date lastmodifiedTimeAfterSetProperty = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeAfterSetProperty = recorder.getLastmodifieddate(propertyset);
         assertNotEquals(lastmodifiedTimeBeforeSetProperty, lastmodifiedTimeAfterSetProperty);
         assertEquals("abcd", propertyset.getStringProperty("d"));
     }
@@ -238,16 +237,16 @@ class PropertysetRecordingSaveTimeTest {
     @Test
     void testSetGetComplexProperty() throws InterruptedException {
         // Expected the set value to change the lastmodifiedtime of the propertyset
-        Date lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         // This is a back door: it is possible to manipulate a complex property without changing the timestamp on the propertyset
         propertyset.getComplexProperty("e").setStringProperty("cc", "modified");
-        Date lastmodifiedTimeAfterSetProperty1 = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeAfterSetProperty1 = recorder.getLastmodifieddate(propertyset);
         assertEquals(lastmodifiedTimeBeforeSetProperty, lastmodifiedTimeAfterSetProperty1, "Expected the time stamps to be identical");
         assertEquals("modified", propertyset.getComplexProperty("e").getStringProperty("cc"));
         Propertyset complex = propertyset.getComplexProperty("e");
         complex.setStringProperty("cc", "modified again");
         propertyset.setComplexProperty("e", complex);
-        Date lastmodifiedTimeAfterSetProperty2 = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeAfterSetProperty2 = recorder.getLastmodifieddate(propertyset);
         assertNotEquals(lastmodifiedTimeAfterSetProperty1, lastmodifiedTimeAfterSetProperty2, "Expected modification time to be changed");
         assertEquals("modified again", propertyset.getComplexProperty("e").getStringProperty("cc"));
     }
@@ -260,10 +259,10 @@ class PropertysetRecordingSaveTimeTest {
     @Test
     void testSetGetReferenceProperty() throws InterruptedException {
         // Expected the set value to change the lastmodifiedtime of the propertyset
-        Date lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
-        UUID newReferencedPropertysetId = UUID.randomUUID();
+        var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
+        var newReferencedPropertysetId = UUID.randomUUID();
         propertyset.setReferenceProperty("f", valueCreator.newPropertyset(newReferencedPropertysetId));
-        Date lastmodifiedTimeAfterSetProperty = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeAfterSetProperty = recorder.getLastmodifieddate(propertyset);
         assertNotEquals(lastmodifiedTimeBeforeSetProperty, lastmodifiedTimeAfterSetProperty);
         assertEquals(newReferencedPropertysetId, propertyset.getReferenceProperty("f").getId());
     }
@@ -276,16 +275,16 @@ class PropertysetRecordingSaveTimeTest {
     @Test
     void testSetGetListProperty() throws InterruptedException {
         // Expected the set value to change the lastmodifiedtime of the propertyset
-        Date lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeBeforeSetProperty = recorder.getLastmodifieddate(propertyset);
         // This is a back door: it is possible to manipulate a list property without changing the timestamp on the propertyset
         propertyset.getListProperty("g").add("modified");
-        Date lastmodifiedTimeAfterSetProperty1 = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeAfterSetProperty1 = recorder.getLastmodifieddate(propertyset);
         assertEquals(lastmodifiedTimeBeforeSetProperty, lastmodifiedTimeAfterSetProperty1, "Expected the time stamps to be identical");
         assertEquals(3, propertyset.getListProperty("g").size());
-        ValueList list = propertyset.getListProperty("g");
+        var list = propertyset.getListProperty("g");
         list.add("modified again");
         propertyset.setListProperty("g", list);
-        Date lastmodifiedTimeAfterSetProperty2 = recorder.getLastmodifieddate(propertyset);
+        var lastmodifiedTimeAfterSetProperty2 = recorder.getLastmodifieddate(propertyset);
         assertNotEquals(lastmodifiedTimeAfterSetProperty1, lastmodifiedTimeAfterSetProperty2, "Expected modification time to be changed");
         assertEquals(4, propertyset.getListProperty("g").size());
     }

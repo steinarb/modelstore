@@ -3,8 +3,6 @@ package no.priv.bang.modeling.modelstore;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -24,15 +22,12 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-
 import no.priv.bang.modeling.modelstore.backend.JsonGeneratorWithReferences;
 import no.priv.bang.modeling.modelstore.backend.JsonPropertysetPersister;
 import no.priv.bang.modeling.modelstore.backend.ModelstoreProvider;
 import no.priv.bang.modeling.modelstore.services.DateFactory;
 import no.priv.bang.modeling.modelstore.services.ModelContext;
 import no.priv.bang.modeling.modelstore.services.Propertyset;
-import no.priv.bang.modeling.modelstore.services.ValueList;
 import no.priv.bang.modeling.modelstore.value.ValueCreatorProvider;
 
 /**
@@ -57,11 +52,11 @@ class ModelContextTest {
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        ModelContext context = modelstore.getDefaultContext();
+        var context = modelstore.getDefaultContext();
 
         // Get a propertyset instance and verify that it is a non-nil instance
         // that can be modified.
-        Propertyset propertyset = context.createPropertyset();
+        var propertyset = context.createPropertyset();
         assertFalse(propertyset.isNil());
         assertFalse(propertyset.hasId());
         assertEquals(valueCreator.getNil().asId(), propertyset.getId());
@@ -79,20 +74,20 @@ class ModelContextTest {
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        ModelContext context = modelstore.getDefaultContext();
+        var context = modelstore.getDefaultContext();
 
-        ValueList list = context.createList();
+        var list = context.createList();
         assertEquals(0, list.size());
         list.add(true);
         assertTrue(list.get(0).asBoolean());
         list.add(3.14);
         assertEquals(3.14, list.get(1).asDouble(), 0.0);
 
-        Propertyset referencedPropertyset = context.findPropertyset(UUID.randomUUID());
+        var referencedPropertyset = context.findPropertyset(UUID.randomUUID());
         list.add(referencedPropertyset);
         assertTrue(list.get(2).isReference());
 
-        Propertyset containedPropertyset = context.createPropertyset();
+        var containedPropertyset = context.createPropertyset();
         list.add(containedPropertyset);
         assertTrue(list.get(3).isComplexProperty());
 
@@ -100,7 +95,7 @@ class ModelContextTest {
         assertTrue(list.get(0).asBoolean()); // Non-null value gives true boolean
         assertEquals(42, list.get(0).asLong().longValue()); // The actual long value is still there
 
-        ValueList containedlist = context.createList();
+        var containedlist = context.createList();
         containedlist.add(100);
         list.add(containedlist);
         assertEquals(1, list.get(4).asList().size());
@@ -120,10 +115,10 @@ class ModelContextTest {
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        ModelContext context = modelstore.getDefaultContext();
+        var context = modelstore.getDefaultContext();
         int numberOfEmbeddedAspects = 6; // Adjust when adding embedded aspects
 
-        Collection<Propertyset> aspects = context.listAllAspects();
+        var aspects = context.listAllAspects();
         assertEquals(numberOfEmbeddedAspects, aspects.size());
     }
 
@@ -133,11 +128,11 @@ class ModelContextTest {
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        ModelContext context = modelstore.getDefaultContext();
+        var context = modelstore.getDefaultContext();
 
         // Get a propertyset by id and verify that it is empty initially
-        UUID newPropertysetId = UUID.randomUUID();
-        Propertyset propertyset = context.findPropertyset(newPropertysetId);
+        var newPropertysetId = UUID.randomUUID();
+        var propertyset = context.findPropertyset(newPropertysetId);
         assertTrue(propertyset.hasId());
         assertEquals(newPropertysetId, propertyset.getId());
 
@@ -155,13 +150,13 @@ class ModelContextTest {
         assertEquals(Long.valueOf(0), propertyset.getLongProperty("id"), "Expected the \"id\" property to not be affected by setting an integer value");
         propertyset.setDoubleProperty("id", Double.valueOf(3.14));
         assertEquals(Double.valueOf(0.0), propertyset.getDoubleProperty("id"), "Expected the \"id\" property to not be affected by setting an integer value");
-        Propertyset complexValue = context.createPropertyset();
+        var complexValue = context.createPropertyset();
         propertyset.setComplexProperty("id", complexValue);
-        Propertyset returnedComplexProperty = propertyset.getComplexProperty("id");
+        var returnedComplexProperty = propertyset.getComplexProperty("id");
         assertEquals(valueCreator.getNilPropertyset(), returnedComplexProperty, "Expected the \"id\" property not to be affected by setting a complex value");
         assertFalse(returnedComplexProperty.hasId());
         assertEquals(valueCreator.getNil().asId(), returnedComplexProperty.getId());
-        Propertyset referencedPropertyset = context.findPropertyset(UUID.randomUUID());
+        var referencedPropertyset = context.findPropertyset(UUID.randomUUID());
         referencedPropertyset.setReferenceProperty("id", referencedPropertyset);
         assertEquals(valueCreator.getNilPropertyset(), propertyset.getReferenceProperty("id"), "Expected the \"id\" property not to be affected by setting an object reference");
         var listValue = valueCreator.newValueList();
@@ -178,20 +173,20 @@ class ModelContextTest {
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        ModelContext context = modelstore.getDefaultContext();
+        var context = modelstore.getDefaultContext();
 
         buildModelWithAspects(context);
 
         // Get all aspects currently in the context
-        Collection<Propertyset> aspects = context.listAllAspects();
+        var aspects = context.listAllAspects();
         assertEquals(9, aspects.size());
 
-        Propertyset vehicle = findAspectByTitle(aspects, "vehicle");
-        Collection<Propertyset> vehicles = context.findObjectsOfAspect(vehicle);
+        var vehicle = findAspectByTitle(aspects, "vehicle");
+        var vehicles = context.findObjectsOfAspect(vehicle);
         assertEquals(5, vehicles.size());
 
-        Propertyset car = findAspectByTitle(aspects, "car");
-        Collection<Propertyset> cars = context.findObjectsOfAspect(car);
+        var car = findAspectByTitle(aspects, "car");
+        var cars = context.findObjectsOfAspect(car);
         assertEquals(3, cars.size());
     }
 
@@ -204,14 +199,14 @@ class ModelContextTest {
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        ModelContext context = modelstore.getDefaultContext();
+        var context = modelstore.getDefaultContext();
 
         // Create two aspects
-        Propertyset generalObjectAspect = buildGeneralObjectAspect(context);
-        Propertyset positionAspect = buildPositionAspect(context);
+        var generalObjectAspect = buildGeneralObjectAspect(context);
+        var positionAspect = buildPositionAspect(context);
 
         // Get a brand new aspectless Propertyset
-        Propertyset propertyset = context.findPropertyset(UUID.randomUUID());
+        var propertyset = context.findPropertyset(UUID.randomUUID());
 
         // Verify that the propertyset has no aspects
         assertEquals(0, propertyset.getAspects().size());
@@ -236,19 +231,19 @@ class ModelContextTest {
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        ModelContext context = modelstore.getDefaultContext();
+        var context = modelstore.getDefaultContext();
         buildModelWithAspects(context);
 
-        JsonFactory jsonFactory = new JsonFactory();
-        JsonPropertysetPersister persister = new JsonPropertysetPersister(jsonFactory, valueCreator);
-        File propertysetsFile = new File(folder, "propertysets.json");
+        var jsonFactory = new JsonFactory();
+        var persister = new JsonPropertysetPersister(jsonFactory, valueCreator);
+        var propertysetsFile = new File(folder, "propertysets.json");
         persister.persist(propertysetsFile, context);
 
         // Parse the written data
         var modelstore2 = new ModelstoreProvider();
         modelstore2.setValueCreator(valueCreator);
         modelstore2.activate();
-        ModelContext context2 = modelstore2.getDefaultContext();
+        var context2 = modelstore2.getDefaultContext();
         persister.restore(propertysetsFile, context2);
 
         // verify that what's parsed is what went in.
@@ -264,38 +259,38 @@ class ModelContextTest {
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        ModelContext context = modelstore.getDefaultContext();
-        UUID idA = UUID.randomUUID();
-        Propertyset a = context.findPropertyset(idA);
-        UUID idB = UUID.randomUUID();
-        Propertyset b = context.findPropertyset(idB);
+        var context = modelstore.getDefaultContext();
+        var idA = UUID.randomUUID();
+        var a = context.findPropertyset(idA);
+        var idB = UUID.randomUUID();
+        var b = context.findPropertyset(idB);
         a.setReferenceProperty("b", b);
 
         // Create a factory
-        JsonFactory jsonFactory = new JsonFactory();
+        var jsonFactory = new JsonFactory();
 
         // Write an objectId
-        File objectIdFile = new File(folder, "objectid.json");
-        JsonGenerator generator = new JsonGeneratorWithReferences(jsonFactory.createGenerator(objectIdFile, JsonEncoding.UTF8));
+        var objectIdFile = new File(folder, "objectid.json");
+        var generator = new JsonGeneratorWithReferences(jsonFactory.createGenerator(objectIdFile, JsonEncoding.UTF8));
         assertTrue(generator.canWriteObjectId());
         generator.writeObjectId(a.getId());
         generator.close();
 
         // Check that the written objectId looks like expected (a JSON quoted string)
-        String expectedObjectIdAsJson = "\"" + idA.toString() + "\"";
-        String objectId = new String(Files.readAllBytes(objectIdFile.toPath()));
+        var expectedObjectIdAsJson = "\"" + idA.toString() + "\"";
+        var objectId = new String(Files.readAllBytes(objectIdFile.toPath()));
         assertEquals(expectedObjectIdAsJson, objectId);
 
         // Write an object reference
-        File objectReferenceFile = new File(folder, "objectreference.json");
-        JsonGenerator generator2 = new JsonGeneratorWithReferences(jsonFactory.createGenerator(objectReferenceFile, JsonEncoding.UTF8));
+        var objectReferenceFile = new File(folder, "objectreference.json");
+        var generator2 = new JsonGeneratorWithReferences(jsonFactory.createGenerator(objectReferenceFile, JsonEncoding.UTF8));
         assertTrue(generator2.canWriteObjectId());
         generator2.writeObjectRef(a.getReferenceProperty("b").getId());
         generator2.close();
 
         // Check that the written objectReference looks like the expected JSON
-        String expectedObjectReferenceAsJson = "{\"ref\":\"" + idB.toString() + "\"}";
-        String objectReference = new String(Files.readAllBytes(objectReferenceFile.toPath()));
+        var expectedObjectReferenceAsJson = "{\"ref\":\"" + idB.toString() + "\"}";
+        var objectReference = new String(Files.readAllBytes(objectReferenceFile.toPath()));
         assertEquals(expectedObjectReferenceAsJson, objectReference);
     }
 
@@ -310,12 +305,12 @@ class ModelContextTest {
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        ModelContext context = modelstore.createContext();
+        var context = modelstore.createContext();
         buildPropertysetA(context, UUID.randomUUID());
         assertEquals(2, context.listAllPropertysets().size(), "Expected context to contain metadata+1 propertyset");
 
-        ModelContext otherContext = modelstore.createContext();
-        UUID bId = UUID.randomUUID();
+        var otherContext = modelstore.createContext();
+        var bId = UUID.randomUUID();
         buildPropertysetB(otherContext, bId);
         assertEquals(2, otherContext.listAllPropertysets().size(), "Expected otherContext to contain metadata+1 propertyset");
 
@@ -323,16 +318,16 @@ class ModelContextTest {
         assertEquals(3, context.listAllPropertysets().size(), "Expected context to contain metadata+2 propertysets");
         // Verify that the copied "B" is the same as the original B
         // TODO decide if PropertysetRecordingSaveTime.equals() should include the context in comparison, for now: get the inner PropertysetImpl instances and compare them instead
-        Propertyset originalB = valueCreator.unwrapPropertyset(otherContext.findPropertyset(bId));
-        Propertyset mergedB = valueCreator.unwrapPropertyset(context.findPropertyset(bId));
+        var originalB = valueCreator.unwrapPropertyset(otherContext.findPropertyset(bId));
+        var mergedB = valueCreator.unwrapPropertyset(context.findPropertyset(bId));
         assertEquals(originalB, mergedB);
 
         // Save and restore the merged context and verify that the restored context is the same as the merged context
-        File propertysetsFile = new File(folder, "mergedcontext.json");
-        OutputStream saveStream = Files.newOutputStream(propertysetsFile.toPath());
+        var propertysetsFile = new File(folder, "mergedcontext.json");
+        var saveStream = Files.newOutputStream(propertysetsFile.toPath());
         modelstore.persistContext(saveStream, context);
-        InputStream loadStream = Files.newInputStream(propertysetsFile.toPath());
-        ModelContext restoredContext = modelstore.restoreContext(loadStream);
+        var loadStream = Files.newInputStream(propertysetsFile.toPath());
+        var restoredContext = modelstore.restoreContext(loadStream);
         compareAllPropertysets(context, restoredContext);
     }
 
@@ -362,16 +357,16 @@ class ModelContextTest {
             .thenReturn(Date.from(instant.plusMillis(7000)))
             .thenReturn(Date.from(instant.plusMillis(8000)));
         modelstore.setDateFactory(dateFactory);
-        ModelContext context = modelstore.createContext();
-        UUID aId = UUID.randomUUID();
+        var context = modelstore.createContext();
+        var aId = UUID.randomUUID();
         buildPropertysetA(context, aId);
         assertEquals(2, context.listAllPropertysets().size(), "Expected context to contain metadata+1 propertyset");
 
-        ModelContext otherContext = modelstore.createContext();
-        UUID bId = UUID.randomUUID();
+        var otherContext = modelstore.createContext();
+        var bId = UUID.randomUUID();
         buildPropertysetA(otherContext, aId);
         otherContext.findPropertyset(aId).setLongProperty("value", 42);
-        Propertyset generalObjectAspect = otherContext.findPropertyset(generalObjectAspectId);
+        var generalObjectAspect = otherContext.findPropertyset(generalObjectAspectId);
         otherContext.findPropertyset(aId).addAspect(generalObjectAspect);
         buildPropertysetB(otherContext, bId);
         otherContext.findPropertyset(bId).addAspect(generalObjectAspect);
@@ -379,7 +374,7 @@ class ModelContextTest {
 
         buildPropertysetB(context, bId);
         context.findPropertyset(bId).setLongProperty("value", 4); // Change the value, should be kept after merge
-        Propertyset modelAspect = context.findPropertyset(modelAspectId);
+        var modelAspect = context.findPropertyset(modelAspectId);
         context.findPropertyset(bId).addAspect(modelAspect);
         assertEquals(3, context.listAllPropertysets().size(), "Expected context to contain metadata+2 propertysets");
 
@@ -399,11 +394,11 @@ class ModelContextTest {
         assertEquals(generalObjectAspectId, context.findPropertyset(bId).getAspects().get(1).asReference().getId());
 
         // Save and restore the merged context and verify that the restored context is the same as the merged context
-        File propertysetsFile = new File(folder, "mergedcontext.json");
-        OutputStream saveStream = Files.newOutputStream(propertysetsFile.toPath());
+        var propertysetsFile = new File(folder, "mergedcontext.json");
+        var saveStream = Files.newOutputStream(propertysetsFile.toPath());
         modelstore.persistContext(saveStream, context);
-        InputStream loadStream = Files.newInputStream(propertysetsFile.toPath());
-        ModelContext restoredContext = modelstore.restoreContext(loadStream);
+        var loadStream = Files.newInputStream(propertysetsFile.toPath());
+        var restoredContext = modelstore.restoreContext(loadStream);
         compareAllPropertysets(context, restoredContext);
     }
 
@@ -420,11 +415,11 @@ class ModelContextTest {
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        ModelContext context = modelstore.createContext();
-        UUID aId = UUID.randomUUID();
+        var context = modelstore.createContext();
+        var aId = UUID.randomUUID();
         buildPropertysetA(context, aId);
         assertEquals(2, context.listAllPropertysets().size(), "Expected context to contain metadata+1 propertyset");
-        Collection<Propertyset> propertysetsBeforeMerge = context.listAllPropertysets();
+        var propertysetsBeforeMerge = context.listAllPropertysets();
 
         // Try merging with null
         context.merge(null);
@@ -434,19 +429,19 @@ class ModelContextTest {
     }
 
     private void buildPropertysetA(ModelContext context, UUID aId) {
-        Propertyset propertyset1 = context.findPropertyset(aId);
+        var propertyset1 = context.findPropertyset(aId);
         propertyset1.setStringProperty("name", "a");
         propertyset1.setDoubleProperty("value", 2.1);
     }
 
     private void buildPropertysetB(ModelContext context, UUID bId) {
-        Propertyset propertyset1 = context.findPropertyset(bId);
+        var propertyset1 = context.findPropertyset(bId);
         propertyset1.setStringProperty("name", "b");
         propertyset1.setDoubleProperty("value", 1.2);
     }
 
     private Propertyset findAspectByTitle(Collection<Propertyset> aspects, String aspectTitle) {
-        for (Propertyset aspect : aspects) {
+        for (var aspect : aspects) {
             if (aspectTitle.equals(aspect.getStringProperty("title"))) {
                 return aspect;
             }
@@ -456,15 +451,15 @@ class ModelContextTest {
     }
 
     private Propertyset buildGeneralObjectAspect(ModelContext context) {
-        UUID generalObjectAspectId = UUID.randomUUID();
-        Propertyset generalObjectAspect = context.findPropertyset(generalObjectAspectId);
+        var generalObjectAspectId = UUID.randomUUID();
+        var generalObjectAspect = context.findPropertyset(generalObjectAspectId);
         generalObjectAspect.setStringProperty("title", "general object");
         generalObjectAspect.setStringProperty("aspect", "object");
-        Propertyset generalObjectAspectProperties = context.createPropertyset();
-        Propertyset nameProperty = context.createPropertyset();
+        var generalObjectAspectProperties = context.createPropertyset();
+        var nameProperty = context.createPropertyset();
         nameProperty.setStringProperty("aspect", "string");
         generalObjectAspectProperties.setComplexProperty("name", nameProperty);
-        Propertyset descriptionProperty = context.createPropertyset();
+        var descriptionProperty = context.createPropertyset();
         descriptionProperty.setStringProperty("aspect", "string");
         generalObjectAspectProperties.setComplexProperty("description", descriptionProperty);
         generalObjectAspect.setComplexProperty("properties", generalObjectAspectProperties);
@@ -472,15 +467,15 @@ class ModelContextTest {
     }
 
     private Propertyset buildPositionAspect(ModelContext context) {
-        UUID positionAspectId = UUID.randomUUID();
-        Propertyset positionAspect = context.findPropertyset(positionAspectId);
+        var positionAspectId = UUID.randomUUID();
+        var positionAspect = context.findPropertyset(positionAspectId);
         positionAspect.setStringProperty("title", "position");
         positionAspect.setStringProperty("aspect", "object");
-        Propertyset positionAspectProperties = context.createPropertyset();
-        Propertyset xposProperty = context.createPropertyset();
+        var positionAspectProperties = context.createPropertyset();
+        var xposProperty = context.createPropertyset();
         xposProperty.setStringProperty("aspect", "number");
         positionAspectProperties.setComplexProperty("xpos", xposProperty);
-        Propertyset yposProperty = context.createPropertyset();
+        var yposProperty = context.createPropertyset();
         yposProperty.setStringProperty("aspect", "number");
         positionAspectProperties.setComplexProperty("ypos", yposProperty);
         positionAspect.setComplexProperty("properties", positionAspectProperties);
@@ -489,17 +484,17 @@ class ModelContextTest {
 
     private void buildModelWithAspects(ModelContext context) {
         // Base aspect "vehicle"
-        UUID vechicleAspectId = UUID.randomUUID();
-        Propertyset vehicleAspect = context.findPropertyset(vechicleAspectId);
+        var vechicleAspectId = UUID.randomUUID();
+        var vehicleAspect = context.findPropertyset(vechicleAspectId);
         vehicleAspect.setStringProperty("title", "vehicle");
         vehicleAspect.setStringProperty("aspect", "object");
-        Propertyset vehicleAspectProperties = context.createPropertyset();
-        Propertyset manufacturerDefinition = context.createPropertyset();
+        var vehicleAspectProperties = context.createPropertyset();
+        var manufacturerDefinition = context.createPropertyset();
         manufacturerDefinition.setStringProperty("aspect", "string");
-        Propertyset modelnameDefinition = context.createPropertyset();
+        var modelnameDefinition = context.createPropertyset();
         modelnameDefinition.setStringProperty("aspect", "string");
         vehicleAspectProperties.setComplexProperty("modelname", modelnameDefinition);
-        Propertyset wheelCountDefinition = context.createPropertyset();
+        var wheelCountDefinition = context.createPropertyset();
         wheelCountDefinition.setStringProperty("description", "Number of wheels on the vehicle");
         wheelCountDefinition.setStringProperty("aspect", "integer");
         wheelCountDefinition.setLongProperty("minimum", Long.valueOf(0));
@@ -507,58 +502,58 @@ class ModelContextTest {
         vehicleAspect.setComplexProperty("properties", vehicleAspectProperties);
 
         // Subaspect "bicycle"
-        UUID bicycleAspectId = UUID.randomUUID();
-        Propertyset bicycleAspect = context.findPropertyset(bicycleAspectId);
+        var bicycleAspectId = UUID.randomUUID();
+        var bicycleAspect = context.findPropertyset(bicycleAspectId);
         bicycleAspect.setStringProperty("title", "bicycle");
         bicycleAspect.setStringProperty("aspect", "object");
         bicycleAspect.setReferenceProperty("inherits", vehicleAspect);
-        Propertyset bicycleAspectProperties = context.createPropertyset();
-        Propertyset frameNumber = context.createPropertyset();
+        var bicycleAspectProperties = context.createPropertyset();
+        var frameNumber = context.createPropertyset();
         frameNumber.setStringProperty("definition", "Unique identifier for the bicycle");
         bicycleAspectProperties.setComplexProperty("framenumber", frameNumber);
         bicycleAspect.setComplexProperty("properties", bicycleAspectProperties);
 
         // Subaspect "car"
-        UUID carAspectId = UUID.randomUUID();
-        Propertyset carAspect = context.findPropertyset(carAspectId);
+        var carAspectId = UUID.randomUUID();
+        var carAspect = context.findPropertyset(carAspectId);
         carAspect.setStringProperty("title", "car");
         carAspect.setStringProperty("aspect", "object");
         carAspect.setReferenceProperty("inherits", vehicleAspect);
-        Propertyset carAspectProperties = context.createPropertyset();
-        Propertyset engineSize = context.createPropertyset();
+        var carAspectProperties = context.createPropertyset();
+        var engineSize = context.createPropertyset();
         engineSize.setStringProperty("description", "Engine displacement in litres");
         engineSize.setStringProperty("aspect", "number");
         carAspectProperties.setComplexProperty("engineSize", engineSize);
-        Propertyset enginePower = context.createPropertyset();
+        var enginePower = context.createPropertyset();
         enginePower.setStringProperty("description", "Engine power in kW");
         enginePower.setStringProperty("aspect", "number");
         carAspectProperties.setComplexProperty("enginePower", enginePower);
         carAspect.setComplexProperty("properties", carAspectProperties);
 
         // Make some instances with aspects
-        Propertyset head = context.findPropertyset(UUID.randomUUID());
+        var head = context.findPropertyset(UUID.randomUUID());
         head.addAspect(bicycleAspect);
         head.setStringProperty("manufacturer", "HEAD");
         head.setStringProperty("model", "Tacoma I");
         head.setStringProperty("frameNumber", "001-234-509-374-331");
-        Propertyset nakamura = context.findPropertyset(UUID.randomUUID());
+        var nakamura = context.findPropertyset(UUID.randomUUID());
         nakamura.addAspect(bicycleAspect);
         nakamura.setStringProperty("manufacturer", "Nakamura");
         nakamura.setStringProperty("model", "Fatbike 2015");
         nakamura.setStringProperty("frameNumber", "003-577-943-547-931");
-        Propertyset ferrari = context.findPropertyset(UUID.randomUUID());
+        var ferrari = context.findPropertyset(UUID.randomUUID());
         ferrari.addAspect(carAspect);
         ferrari.setStringProperty("manufacturer", "Ferrari");
         ferrari.setStringProperty("model", "550 Barchetta");
         ferrari.setDoubleProperty("engineSize", 5.5);
         ferrari.setDoubleProperty("enginePower", 357.0);
-        Propertyset subaru = context.findPropertyset(UUID.randomUUID());
+        var subaru = context.findPropertyset(UUID.randomUUID());
         subaru.addAspect(carAspect);
         subaru.setStringProperty("manufacturer", "Subaru");
         subaru.setStringProperty("model", "Outback");
         subaru.setDoubleProperty("engineSize", 2.5);
         subaru.setDoubleProperty("enginePower", 125.0);
-        Propertyset volvo = context.findPropertyset(UUID.randomUUID());
+        var volvo = context.findPropertyset(UUID.randomUUID());
         volvo.addAspect(carAspect);
         volvo.setStringProperty("manufacturer", "Volvo");
         volvo.setStringProperty("model", "P1800");

@@ -3,13 +3,9 @@ package no.priv.bang.modeling.modelstore;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.nio.file.Files;
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -17,7 +13,6 @@ import static no.priv.bang.modeling.modelstore.testutils.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import no.priv.bang.modeling.modelstore.backend.ModelstoreProvider;
-import no.priv.bang.modeling.modelstore.services.ErrorBean;
 import no.priv.bang.modeling.modelstore.services.ModelContext;
 import no.priv.bang.modeling.modelstore.services.Modelstore;
 import no.priv.bang.modeling.modelstore.value.ValueCreatorProvider;
@@ -41,7 +36,7 @@ class ModelstoreTest {
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        ModelContext context = modelstore.getDefaultContext();
+        var context = modelstore.getDefaultContext();
         assertNotNull(context);
         assertEquals(6, context.listAllAspects().size(), "Expected the built-in aspects");
     }
@@ -56,8 +51,8 @@ class ModelstoreTest {
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        InputStream carsAndBicylesStream = getClass().getResourceAsStream("/json/cars_and_bicycles.json");
-        ModelContext context = modelstore.restoreContext(carsAndBicylesStream);
+        var carsAndBicylesStream = getClass().getResourceAsStream("/json/cars_and_bicycles.json");
+        var context = modelstore.restoreContext(carsAndBicylesStream);
 
         assertEquals(9, context.listAllAspects().size());
         assertEquals(9, context.listAllPropertysets().size());
@@ -74,15 +69,15 @@ class ModelstoreTest {
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        InputStream carsAndBicylesStream = getClass().getResourceAsStream("/json/cars_and_bicycles.json");
-        ModelContext context1 = modelstore.restoreContext(carsAndBicylesStream);
+        var carsAndBicylesStream = getClass().getResourceAsStream("/json/cars_and_bicycles.json");
+        var context1 = modelstore.restoreContext(carsAndBicylesStream);
 
-        File saveFile = new File(folder, "save");
-        OutputStream saveStream = Files.newOutputStream(saveFile.toPath());
+        var saveFile = new File(folder, "save");
+        var saveStream = Files.newOutputStream(saveFile.toPath());
         modelstore.persistContext(saveStream, context1);
 
-        InputStream loadStream = Files.newInputStream(saveFile.toPath());
-        ModelContext context2 = modelstore.restoreContext(loadStream);
+        var loadStream = Files.newInputStream(saveFile.toPath());
+        var context2 = modelstore.restoreContext(loadStream);
 
         compareAllPropertysets(context1, context2);
     }
@@ -102,18 +97,18 @@ class ModelstoreTest {
         var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
-        InputStream carsAndBicylesStream = getClass().getResourceAsStream("/json/cars_and_bicycles.json");
-        final ModelContext context1 = modelstore.restoreContext(carsAndBicylesStream);
+        var carsAndBicylesStream = getClass().getResourceAsStream("/json/cars_and_bicycles.json");
+        final var context1 = modelstore.restoreContext(carsAndBicylesStream);
 
-        PipedInputStream loadStream = new PipedInputStream();
-        final OutputStream saveStream = new PipedOutputStream(loadStream);
+        var loadStream = new PipedInputStream();
+        final var saveStream = new PipedOutputStream(loadStream);
         new Thread(new Runnable() {
-                public void run() {
-                    modelstore.persistContext(saveStream, context1);
-                }
-            }).start();
+            public void run() {
+                modelstore.persistContext(saveStream, context1);
+            }
+        }).start();
 
-        ModelContext context2 = modelstore.restoreContext(loadStream);
+        var context2 = modelstore.restoreContext(loadStream);
 
         compareAllPropertysets(context1, context2);
     }
@@ -134,23 +129,23 @@ class ModelstoreTest {
      */
     @Test
     void testLogMultithreading() throws IOException, InterruptedException {
-        final Modelstore modelstore = new ModelstoreProvider();
+        final var modelstore = new ModelstoreProvider();
 
-        Thread other = new Thread(new Runnable() {
-                public void run() {
-                    for (int i = 0; i < 500; i++) {
-                        String message = "Error in other thread " + i;
-                        modelstore.logError(message, null, null);
-                    }
+        var other = new Thread(new Runnable() {
+            public void run() {
+                for (int i = 0; i < 500; i++) {
+                    var message = "Error in other thread " + i;
+                    modelstore.logError(message, null, null);
                 }
-            });
+            }
+        });
         other.start();
 
         modelstore.logError("Error in this thread 1", null, null);
-        List<ErrorBean> temp = modelstore.getErrors();
+        var temp = modelstore.getErrors();
         assertNotNull(temp);
         modelstore.logError("Error in this thread 2", null, null);
-        for (int i = 0; i < 500; i++) {
+        for (var i = 0; i < 500; i++) {
             modelstore.logError("Error in this thread " + i, null, null);
             temp = modelstore.getErrors();
         }

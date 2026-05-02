@@ -142,10 +142,10 @@ class EmptyValueListTest {
 
     @Test
     void testToArray() {
-        Object[] array1 = list.toArray();
+        var array1 = list.toArray();
         assertEquals(0, array1.length);
-        Value[] valueArray = new Value[10];
-        Value[] array2 = list.toArray(valueArray);
+        var valueArray = new Value[10];
+        var array2 = list.toArray(valueArray);
         assertEquals(0, array2.length);
     }
 

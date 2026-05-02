@@ -117,7 +117,7 @@ public class Values {
      * @return a {@link ComplexValue} instance
      */
     public static Value toComplexValue(Propertyset complexValue, boolean makeDefensiveCopy) {
-        Propertyset value = makeDefensiveCopy && complexValue != null ? new PropertysetImpl(complexValue) : complexValue;
+        var value = makeDefensiveCopy && complexValue != null ? new PropertysetImpl(complexValue) : complexValue;
         return new ComplexValue(value);
     }
 
@@ -149,7 +149,7 @@ public class Values {
      * @return a {@link ListValue} instance
      */
     static Value toListValue(ValueList listValue, boolean makeDefensiveCopy) {
-        ValueList value = makeDefensiveCopy && listValue != null ? new ValueArrayList(listValue) : listValue;
+        var value = makeDefensiveCopy && listValue != null ? new ValueArrayList(listValue) : listValue;
         return new ListValue(value);
     }
 

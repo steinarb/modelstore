@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import no.priv.bang.modeling.modelstore.services.Value;
-import no.priv.bang.modeling.modelstore.services.ValueList;
 
 /**
  * Unit tests for {@link StringValue}.
@@ -116,9 +115,9 @@ class StringValueTest {
 
     @Test
     void testAsList() {
-        ValueList emptyList1 = valueWithNumber.asList();
+        var emptyList1 = valueWithNumber.asList();
         assertTrue(emptyList1.isEmpty());
-        ValueList emptyList2 = valueNotANumber.asList();
+        var emptyList2 = valueNotANumber.asList();
         assertTrue(emptyList2.isEmpty());
     }
 
@@ -127,9 +126,9 @@ class StringValueTest {
      */
     @Test
     void testHashCode() {
-        Value nullStringValue = toStringValue(null);
+        var nullStringValue = toStringValue(null);
         assertEquals(31, nullStringValue.hashCode());
-        Value foo = toStringValue("foo");
+        var foo = toStringValue("foo");
         assertEquals(101605, foo.hashCode());
     }
 
@@ -138,8 +137,8 @@ class StringValueTest {
      */
     @Test
     void testEquals() {
-        Value nullStringValue = toStringValue(null);
-        Value value = toStringValue("foobar");
+        var nullStringValue = toStringValue(null);
+        var value = toStringValue("foobar");
         assertNotEquals(nullStringValue, null); // NOSONAR the point here is to test propertyset.equals, so no the arguments should not be swapped
         assertNotEquals(nullStringValue, getNil());
         assertEquals(nullStringValue, nullStringValue);
@@ -152,9 +151,9 @@ class StringValueTest {
      */
     @Test
     void testToString() {
-        Value nullLongValue = toStringValue(null);
+        var nullLongValue = toStringValue(null);
         assertEquals("StringValue [value=]", nullLongValue.toString());
-        Value value = toStringValue("bar");
+        var value = toStringValue("bar");
         assertEquals("StringValue [value=bar]", value.toString());
     }
 

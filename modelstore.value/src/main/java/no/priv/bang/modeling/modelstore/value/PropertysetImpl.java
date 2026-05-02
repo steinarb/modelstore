@@ -40,14 +40,14 @@ public class PropertysetImpl implements Propertyset {
 
         for (String propertyname : propertyset.getPropertynames()) {
             if (!ASPECTS_KEY.equals(propertyname) && !ID_KEY.equals(propertyname)) {
-                Value propertyvalue = propertyset.getProperty(propertyname);
+                var propertyvalue = propertyset.getProperty(propertyname);
                 setProperty(propertyname, propertyvalue);
             }
         }
 
         if (propertyset.hasAspect()) {
-            ValueList propertysetAspects = propertyset.getAspects();
-            for (Value aspect : propertysetAspects) {
+            var propertysetAspects = propertyset.getAspects();
+            for (var aspect : propertysetAspects) {
                 addAspect(aspect.asReference());
             }
         }
@@ -82,7 +82,7 @@ public class PropertysetImpl implements Propertyset {
     }
 
     public boolean hasAspect() {
-        Value rawValue = properties.get(ASPECTS_KEY);
+        var rawValue = properties.get(ASPECTS_KEY);
         if (null != rawValue) {
             return !rawValue.asList().isEmpty();
         }
@@ -91,7 +91,7 @@ public class PropertysetImpl implements Propertyset {
     }
 
     public ValueList getAspects() {
-        Value rawValue = properties.get(ASPECTS_KEY);
+        var rawValue = properties.get(ASPECTS_KEY);
         if (null != rawValue) {
             return rawValue.asList();
         }
@@ -100,7 +100,7 @@ public class PropertysetImpl implements Propertyset {
     }
 
     public void addAspect(Propertyset aspect) {
-        Value rawValue = properties.get(ASPECTS_KEY);
+        var rawValue = properties.get(ASPECTS_KEY);
         if (null != rawValue) {
             ValueList aspectList = rawValue.asList();
             if (!aspectContainedInList(aspectList, aspect)) {
@@ -114,7 +114,7 @@ public class PropertysetImpl implements Propertyset {
     }
 
     private boolean aspectContainedInList(ValueList aspectList, Propertyset aspect) {
-        for (Value value : aspectList) {
+        for (var value : aspectList) {
             if (value.asReference().equals(aspect)) {
                 return true;
             }
@@ -136,7 +136,7 @@ public class PropertysetImpl implements Propertyset {
     }
 
     public Boolean getBooleanProperty(String propertyname) {
-        Value rawValue = properties.get(propertyname);
+        var rawValue = properties.get(propertyname);
         if (null != rawValue) {
             return rawValue.asBoolean();
         }
@@ -157,7 +157,7 @@ public class PropertysetImpl implements Propertyset {
     }
 
     public Long getLongProperty(String propertyname) {
-        Value rawValue = properties.get(propertyname);
+        var rawValue = properties.get(propertyname);
         if (null != rawValue) {
             return rawValue.asLong();
         }
@@ -178,7 +178,7 @@ public class PropertysetImpl implements Propertyset {
     }
 
     public Double getDoubleProperty(String propertyname) {
-        Value rawValue = properties.get(propertyname);
+        var rawValue = properties.get(propertyname);
         if (null != rawValue) {
             return rawValue.asDouble();
         }
@@ -199,7 +199,7 @@ public class PropertysetImpl implements Propertyset {
     }
 
     public String getStringProperty(String propertyname) {
-        Value rawValue = properties.get(propertyname);
+        var rawValue = properties.get(propertyname);
         if (null != rawValue) {
             return rawValue.asString();
         }
@@ -214,7 +214,7 @@ public class PropertysetImpl implements Propertyset {
     }
 
     public Propertyset getComplexProperty(String propertyname) {
-        Value rawValue = properties.get(propertyname);
+        var rawValue = properties.get(propertyname);
         if (null != rawValue) {
             return rawValue.asComplexProperty();
         }
@@ -229,7 +229,7 @@ public class PropertysetImpl implements Propertyset {
     }
 
     public Propertyset getReferenceProperty(String propertyname) {
-        Value rawValue = properties.get(propertyname);
+        var rawValue = properties.get(propertyname);
         if (null != rawValue) {
             return rawValue.asReference();
         }
@@ -244,7 +244,7 @@ public class PropertysetImpl implements Propertyset {
     }
 
     public ValueList getListProperty(String propertyname) {
-        Value rawValue = properties.get(propertyname);
+        var rawValue = properties.get(propertyname);
         if (null != rawValue) {
             return rawValue.asList();
         }
@@ -260,8 +260,8 @@ public class PropertysetImpl implements Propertyset {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
+        final var prime = 31;
+        var result = 1;
         result = prime * result + properties.hashCode();
         return result;
     }

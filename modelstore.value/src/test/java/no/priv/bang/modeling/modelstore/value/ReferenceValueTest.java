@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import no.priv.bang.modeling.modelstore.services.Propertyset;
 import no.priv.bang.modeling.modelstore.services.Value;
-import no.priv.bang.modeling.modelstore.services.ValueList;
 
 /**
  * Unit tests for {@link ReferenceValue}.
@@ -108,7 +107,7 @@ class ReferenceValueTest {
 
     @Test
     void testAsList() {
-        ValueList emptyList = value.asList();
+        var emptyList = value.asList();
         assertTrue(emptyList.isEmpty());
     }
 
@@ -117,7 +116,7 @@ class ReferenceValueTest {
      */
     @Test
     void testHashCode() {
-        Value nullReferenceValue = toReferenceValue(null);
+        var nullReferenceValue = toReferenceValue(null);
         assertEquals(31, nullReferenceValue.hashCode());
         assertEquals(1755681326, value.hashCode());
     }
@@ -127,7 +126,7 @@ class ReferenceValueTest {
      */
     @Test
     void testEquals() {
-        Value nullReferenceValue = toReferenceValue(null);
+        var nullReferenceValue = toReferenceValue(null);
         assertNotEquals(nullReferenceValue, null); // NOSONAR the point here is to test propertyset.equals, so no the arguments should not be swapped
         assertNotEquals(nullReferenceValue,getNil().asComplexProperty());
         assertEquals(nullReferenceValue, nullReferenceValue);
@@ -136,8 +135,8 @@ class ReferenceValueTest {
         assertEquals(value, value);
 
         // Compare two different object with no id property
-        Value refToNoId = toReferenceValue(new PropertysetImpl());
-        Value refToNoId2 = toReferenceValue(new PropertysetImpl());
+        var refToNoId = toReferenceValue(new PropertysetImpl());
+        var refToNoId2 = toReferenceValue(new PropertysetImpl());
         assertEquals(refToNoId, refToNoId2);
 
     }
@@ -147,7 +146,7 @@ class ReferenceValueTest {
      */
     @Test
     void testToString() {
-        Value nullReferenceValue = toReferenceValue(null);
+        var nullReferenceValue = toReferenceValue(null);
         assertEquals("ReferenceValue [value=00000000-0000-0000-0000-000000000000]", nullReferenceValue.toString());
         assertEquals("ReferenceValue [value=276dbd6e-dc46-4c14-af9e-83c63c10e0b3]", value.toString());
     }

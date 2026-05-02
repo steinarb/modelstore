@@ -9,7 +9,6 @@ import static no.priv.bang.modeling.modelstore.value.Values.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import no.priv.bang.modeling.modelstore.services.Value;
-import no.priv.bang.modeling.modelstore.services.ValueList;
 
 /**
  * Unit tests for {@link IdValue}.
@@ -101,7 +100,7 @@ class IdValueTest {
 
     @Test
     void testAsList() {
-        ValueList emptyList = value.asList();
+        var emptyList = value.asList();
         assertTrue(emptyList.isEmpty());
     }
 
@@ -110,7 +109,7 @@ class IdValueTest {
      */
     @Test
     void testHashCode() {
-        IdValue nullIdValue = new IdValue(null);
+        var nullIdValue = new IdValue(null);
         assertEquals(31, nullIdValue.hashCode());
         assertEquals(-511156377, value.hashCode());
     }
@@ -120,7 +119,7 @@ class IdValueTest {
      */
     @Test
     void testEquals() {
-        IdValue nullIdValue = new IdValue(null);
+        var nullIdValue = new IdValue(null);
         assertNotEquals(nullIdValue, null); // NOSONAR the point here is to test propertyset.equals, so no the arguments should not be swapped
         assertNotEquals(nullIdValue, getNil().asId());
         assertEquals(nullIdValue, nullIdValue);
@@ -129,7 +128,7 @@ class IdValueTest {
         assertEquals(value, value);
 
         // Different object with the same UUID compares as equal
-        IdValue value2 = new IdValue(UUID.fromString(value.asString()));
+        var value2 = new IdValue(UUID.fromString(value.asString()));
         assertEquals(value, value2);
     }
 

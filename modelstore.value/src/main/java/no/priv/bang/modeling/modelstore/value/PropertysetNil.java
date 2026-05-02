@@ -150,7 +150,7 @@ public final class PropertysetNil implements Propertyset {
         }
 
         if (obj instanceof Propertyset) {
-            Propertyset other = (Propertyset) obj;
+            var other = (Propertyset) obj;
             if (other.getPropertynames().isEmpty()) {
                 return true;
             }

@@ -34,12 +34,12 @@ class BooleanValue extends ValueBase {
     }
 
     public Long asLong() {
-        boolean bool = value.booleanValue();
+        var bool = value.booleanValue();
         return Long.valueOf(bool ? 1 : 0);
     }
 
     public Double asDouble() {
-        boolean bool = value.booleanValue();
+        var bool = value.booleanValue();
         return bool ? 1.0 : 0.0;
     }
 
@@ -66,8 +66,8 @@ class BooleanValue extends ValueBase {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
+        final var prime = 31;
+        var result = 1;
         result = prime * result + value.hashCode();
         return result;
     }
@@ -86,7 +86,7 @@ class BooleanValue extends ValueBase {
             return false;
         }
 
-        BooleanValue other = (BooleanValue) obj;
+        var other = (BooleanValue) obj;
         return value.equals(other.value);
     }
 

@@ -152,8 +152,8 @@ class PropertysetRecordingSaveTime implements Propertyset {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
+        final var prime = 31;
+        var result = 1;
         result = prime * result + propertyset.hashCode();
         return result;
     }
@@ -169,7 +169,7 @@ class PropertysetRecordingSaveTime implements Propertyset {
         }
 
         if (getClass() == obj.getClass()) {
-            PropertysetRecordingSaveTime other = (PropertysetRecordingSaveTime) obj;
+            var other = (PropertysetRecordingSaveTime) obj;
             return propertyset.equals(other.propertyset) && recorder.equals(other.recorder);
         }
 

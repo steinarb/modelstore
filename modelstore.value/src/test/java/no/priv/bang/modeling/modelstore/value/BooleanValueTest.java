@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import no.priv.bang.modeling.modelstore.services.Value;
-import no.priv.bang.modeling.modelstore.services.ValueList;
 
 /**
  * Unit tests for {@link BooleanValue}.
@@ -99,7 +98,7 @@ class BooleanValueTest {
 
     @Test
     void testAsList() {
-        ValueList emptyList = value.asList();
+        var emptyList = value.asList();
         assertTrue(emptyList.isEmpty());
     }
 
@@ -108,9 +107,9 @@ class BooleanValueTest {
      */
     @Test
     void testHashCode() {
-        Value nullBooleanValue = toBooleanValue(null);
+        var nullBooleanValue = toBooleanValue(null);
         assertEquals(1268, nullBooleanValue.hashCode());
-        Value trueBooleanValue = toBooleanValue(Boolean.TRUE);
+        var trueBooleanValue = toBooleanValue(Boolean.TRUE);
         assertEquals(1262, trueBooleanValue.hashCode());
     }
 
@@ -119,9 +118,9 @@ class BooleanValueTest {
      */
     @Test
     void testEquals() {
-        Value nullBooleanValue = toBooleanValue(null);
-        Value falseBooleanValue = toBooleanValue(Boolean.FALSE);
-        Value trueBooleanValue = toBooleanValue(Boolean.TRUE);
+        var nullBooleanValue = toBooleanValue(null);
+        var falseBooleanValue = toBooleanValue(Boolean.FALSE);
+        var trueBooleanValue = toBooleanValue(Boolean.TRUE);
         assertNotEquals(nullBooleanValue, null); // NOSONAR the point here is to test propertyset.equals, so no the arguments should not be swapped
         assertNotEquals(nullBooleanValue, getNil());
         assertEquals(nullBooleanValue, nullBooleanValue);
@@ -134,11 +133,11 @@ class BooleanValueTest {
      */
     @Test
     void testToString() {
-        Value nullBooleanValue = toBooleanValue(null);
+        var nullBooleanValue = toBooleanValue(null);
         assertEquals("BooleanValue [value=false]", nullBooleanValue.toString());
-        Value falseBooleanValue = toBooleanValue(Boolean.FALSE);
+        var falseBooleanValue = toBooleanValue(Boolean.FALSE);
         assertEquals("BooleanValue [value=false]", falseBooleanValue.toString());
-        Value trueBooleanValue = toBooleanValue(Boolean.TRUE);
+        var trueBooleanValue = toBooleanValue(Boolean.TRUE);
         assertEquals("BooleanValue [value=true]", trueBooleanValue.toString());
     }
 }

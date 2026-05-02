@@ -105,7 +105,7 @@ class ListValueTest {
 
     @Test
     void testAsList() {
-        ValueList list = value.asList();
+        var list = value.asList();
         assertFalse(list.isEmpty());
         assertEquals(valueList.size(), list.size());
     }
@@ -116,8 +116,8 @@ class ListValueTest {
      */
     @Test
     void testEmptyListEqualsNilList() {
-        Value emptylist = toListValue(newList(), false);
-        Value nil = getNil();
+        var emptylist = toListValue(newList(), false);
+        var nil = getNil();
         assertEquals(emptylist, nil);
 
         // TODO: should the equals be implemented in the nil object as well?
@@ -129,9 +129,9 @@ class ListValueTest {
      */
     @Test
     void testHashCode() {
-        Value nullListValue = toListValue(null);
+        var nullListValue = toListValue(null);
         assertEquals(63, nullListValue.hashCode());
-        Value foo = toListValue(newList(), false);
+        var foo = toListValue(newList(), false);
         assertEquals(63, foo.hashCode());
         assertEquals(-24528609, value.hashCode());
     }
@@ -141,11 +141,11 @@ class ListValueTest {
      */
     @Test
     void testEquals() {
-        Value nullListValue = toListValue(null);
-        Value emptyvalue = toListValue(newList(), false);
+        var nullListValue = toListValue(null);
+        var emptyvalue = toListValue(newList(), false);
         ValueList list = newList();
         list.add(toDoubleValue(3.14));
-        Value otherValue = toListValue(list, false);
+        var otherValue = toListValue(list, false);
         assertNotEquals(nullListValue, null); // NOSONAR the point here is to test propertyset.equals, so no the arguments should not be swapped
         assertEquals(nullListValue, getNil());
         assertEquals(nullListValue, nullListValue);
@@ -155,7 +155,7 @@ class ListValueTest {
         assertNotEquals(value, emptyvalue);
         assertNotEquals(value, nullListValue);
         assertNotEquals(emptyvalue, value);
-        Value stringvalue = toStringValue("foobar");
+        var stringvalue = toStringValue("foobar");
         assertNotEquals(value, stringvalue);
         assertNotEquals(value, otherValue);
     }

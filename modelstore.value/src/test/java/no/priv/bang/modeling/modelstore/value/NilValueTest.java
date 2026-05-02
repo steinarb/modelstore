@@ -1,7 +1,5 @@
 package no.priv.bang.modeling.modelstore.value;
 
-import no.priv.bang.modeling.modelstore.services.ValueList;
-
 import static no.priv.bang.modeling.modelstore.value.Values.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -86,7 +84,7 @@ class NilValueTest {
 
     @Test
     void testAsList() {
-        ValueList emptyList = getNil().asList();
+        var emptyList = getNil().asList();
         assertTrue(emptyList.isEmpty());
         assertEquals(0, emptyList.size());
 

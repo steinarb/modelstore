@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import no.priv.bang.modeling.modelstore.services.Value;
-import no.priv.bang.modeling.modelstore.services.ValueList;
 
 /**
  * Unit tests for {@link DoubleValue}.
@@ -99,7 +98,7 @@ class DoubleValueTest {
 
     @Test
     void testAsList() {
-        ValueList emptyList = value.asList();
+        var emptyList = value.asList();
         assertTrue(emptyList.isEmpty());
     }
 
@@ -108,9 +107,9 @@ class DoubleValueTest {
      */
     @Test
     void testHashCode() {
-        Value nullDoubleValue = toDoubleValue(null);
+        var nullDoubleValue = toDoubleValue(null);
         assertEquals(31, nullDoubleValue.hashCode());
-        Value pi = toDoubleValue(3.14);
+        var pi = toDoubleValue(3.14);
         assertEquals(300063686, pi.hashCode());
     }
 
@@ -119,7 +118,7 @@ class DoubleValueTest {
      */
     @Test
     void testEquals() {
-        Value nullDoubleValue = toDoubleValue(null);
+        var nullDoubleValue = toDoubleValue(null);
         assertNotEquals(nullDoubleValue, null); // NOSONAR the point here is to test propertyset.equals, so no the arguments should not be swapped
         assertNotEquals(nullDoubleValue, getNil());
         assertEquals(nullDoubleValue, nullDoubleValue);
@@ -132,9 +131,9 @@ class DoubleValueTest {
      */
     @Test
     void testToString() {
-        Value nullDoubleValue = toDoubleValue(null);
+        var nullDoubleValue = toDoubleValue(null);
         assertEquals("DoubleValue [value=0.0]", nullDoubleValue.toString());
-        Value e = toDoubleValue(2.78);
+        var e = toDoubleValue(2.78);
         assertEquals("DoubleValue [value=2.78]", e.toString());
     }
 

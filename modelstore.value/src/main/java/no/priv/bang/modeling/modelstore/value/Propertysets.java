@@ -20,7 +20,7 @@ public class Propertysets {
      */
     public static Propertyset findWrappedPropertyset(Propertyset propertyset) {
         if (propertyset instanceof PropertysetRecordingSaveTime) {
-            PropertysetRecordingSaveTime wrapper = (PropertysetRecordingSaveTime) propertyset;
+            var wrapper = (PropertysetRecordingSaveTime) propertyset;
             return wrapper.getPropertyset();
         }
 

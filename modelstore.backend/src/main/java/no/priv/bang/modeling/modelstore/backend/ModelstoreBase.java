@@ -47,22 +47,22 @@ class ModelstoreBase extends BuiltinAspectsBase implements Modelstore {
     }
 
     public ModelContext createContext() {
-        ModelContextImpl ctxt = new ModelContextImpl(this);
+        var ctxt = new ModelContextImpl(this);
         return new ModelContextRecordingMetadata(ctxt, dateFactory, valueCreator);
     }
 
     public ModelContext restoreContext(InputStream jsonfilestream) {
-        ModelContextImpl ctxt = new ModelContextImpl(this);
-        JsonFactory jsonFactory = new JsonFactory();
-        JsonPropertysetPersister persister = new JsonPropertysetPersister(jsonFactory, valueCreator);
+        var ctxt = new ModelContextImpl(this);
+        var jsonFactory = new JsonFactory();
+        var persister = new JsonPropertysetPersister(jsonFactory, valueCreator);
         persister.restore(jsonfilestream, ctxt);
 
         return new ModelContextRecordingMetadata(ctxt, dateFactory, valueCreator);
     }
 
     public void persistContext(OutputStream jsonfilestream, ModelContext context) {
-        JsonFactory jsonFactory = new JsonFactory();
-        JsonPropertysetPersister persister = new JsonPropertysetPersister(jsonFactory, valueCreator);
+        var jsonFactory = new JsonFactory();
+        var persister = new JsonPropertysetPersister(jsonFactory, valueCreator);
         persister.persist(jsonfilestream, context);
     }
 
