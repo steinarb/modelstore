@@ -49,7 +49,6 @@ class ModelContextTest {
     @Test
     void testCreatePropertyset() {
         var modelstore = new ModelstoreProvider();
-        var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
         var context = modelstore.getDefaultContext();
@@ -71,7 +70,6 @@ class ModelContextTest {
     @Test
     void testList() {
         var modelstore = new ModelstoreProvider();
-        var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
         var context = modelstore.getDefaultContext();
@@ -112,7 +110,6 @@ class ModelContextTest {
     @Test
     void testEmbeddedAspects() {
         var modelstore = new ModelstoreProvider();
-        var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
         var context = modelstore.getDefaultContext();
@@ -125,7 +122,6 @@ class ModelContextTest {
     @Test
     void testFindPropertysetById() {
         var modelstore = new ModelstoreProvider();
-        var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
         var context = modelstore.getDefaultContext();
@@ -170,7 +166,6 @@ class ModelContextTest {
     @Test
     void testFindPropertysetOfAspect() {
         var modelstore = new ModelstoreProvider();
-        var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
         var context = modelstore.getDefaultContext();
@@ -196,7 +191,6 @@ class ModelContextTest {
     @Test
     void testPropertysetWithMultipleAspects() {
         var modelstore = new ModelstoreProvider();
-        var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
         var context = modelstore.getDefaultContext();
@@ -228,7 +222,6 @@ class ModelContextTest {
     @Test
     void experimentalJacksonPersist() throws IOException {
         var modelstore = new ModelstoreProvider();
-        var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
         var context = modelstore.getDefaultContext();
@@ -256,7 +249,6 @@ class ModelContextTest {
         // Create two propertysets with ids, and make a reference to propertyset
         // "b" from propertyset "a".
         var modelstore = new ModelstoreProvider();
-        var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
         var context = modelstore.getDefaultContext();
@@ -302,7 +294,6 @@ class ModelContextTest {
     @Test
     void testMergeNoOverlapBetweenContexts() throws IOException {
         var modelstore = new ModelstoreProvider();
-        var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
         var context = modelstore.createContext();
@@ -342,7 +333,6 @@ class ModelContextTest {
     @Test
     void testMergeWithOverlapBetweenContexts() throws IOException, InterruptedException {
         var modelstore = new ModelstoreProvider();
-        var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
         var instant = LocalDateTime.now().toInstant(ZoneOffset.UTC);
@@ -412,7 +402,6 @@ class ModelContextTest {
     @Test
     void testMergeWithNull() throws IOException, InterruptedException {
         var modelstore = new ModelstoreProvider();
-        var valueCreator = new ValueCreatorProvider();
         modelstore.setValueCreator(valueCreator);
         modelstore.activate();
         var context = modelstore.createContext();
