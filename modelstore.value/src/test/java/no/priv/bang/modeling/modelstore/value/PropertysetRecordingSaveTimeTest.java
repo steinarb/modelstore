@@ -24,8 +24,8 @@ import no.priv.bang.modeling.modelstore.services.Propertyset;
  */
 class PropertysetRecordingSaveTimeTest {
 
-    private final static UUID generalObjectId = UUID.fromString("06cee83c-2ca8-44b8-8035-c79586665532");
-    private final static UUID propertysetId = UUID.fromString("a72f6189-f132-4714-8f11-6258967a74ce");
+    private static final UUID generalObjectId = UUID.fromString("06cee83c-2ca8-44b8-8035-c79586665532");
+    private static final UUID propertysetId = UUID.fromString("a72f6189-f132-4714-8f11-6258967a74ce");
     private ModificationRecorder recorder;
     private ValueCreatorProvider valueCreator;
     private Propertyset inner;
