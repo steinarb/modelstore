@@ -63,10 +63,10 @@ class PropertysetRecordingSaveTimeTest {
         };
         inner = valueCreator.newPropertyset(propertysetId );
         propertyset = new PropertysetRecordingSaveTime(recorder, inner);
-        addProperties(propertyset);
+        addProperties();
     }
 
-    private void addProperties(Propertyset propertyset2) {
+    private void addProperties() {
         propertyset.addAspect(valueCreator.newPropertyset(generalObjectId));
         propertyset.setBooleanProperty("a", true);
         propertyset.setLongProperty("b", 1);
