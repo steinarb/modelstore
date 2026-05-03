@@ -31,6 +31,7 @@ import no.priv.bang.modeling.modelstore.services.ValueList;
 @ExamReactorStrategy(PerClass.class)
 public class ModelstoreTest extends KarafTestSupport {
 
+    @Override
     @Configuration
     public Option[] config() {
         final var modelstoreFeatureRepo = maven()
