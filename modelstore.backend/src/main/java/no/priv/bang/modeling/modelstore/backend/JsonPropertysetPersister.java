@@ -192,7 +192,7 @@ public class JsonPropertysetPersister {
     private Value parseObject(JsonParser parser, ModelContext modelContext) throws IOException {
         Propertyset propertyset = null;
         while (parser.nextToken() != JsonToken.END_OBJECT) {
-            String currentFieldName = parser.getCurrentName();
+            var currentFieldName = parser.currentName();
             if ("ref".equals(currentFieldName)) {
                 Propertyset referencedPropertyset = parseObjectReference(parser, modelContext);
 
