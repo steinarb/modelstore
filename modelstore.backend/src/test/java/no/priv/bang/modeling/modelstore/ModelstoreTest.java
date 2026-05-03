@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import static no.priv.bang.modeling.modelstore.testutils.TestUtils.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import no.priv.bang.modeling.modelstore.backend.ModelstoreProvider;
@@ -142,18 +143,16 @@ class ModelstoreTest {
         other.start();
 
         modelstore.logError("Error in this thread 1", null, null);
-        var temp = modelstore.getErrors();
-        assertNotNull(temp);
+        assertThat(modelstore.getErrors()).hasSize(1);
         modelstore.logError("Error in this thread 2", null, null);
         for (var i = 0; i < 500; i++) {
             modelstore.logError("Error in this thread " + i, null, null);
-            temp = modelstore.getErrors();
         }
 
         other.join();
 
         // Verify that the expected number of log messages have been logged
-        assertEquals(1002, modelstore.getErrors().size());
+        assertThat(modelstore.getErrors()).hasSize(1002);
     }
 
 }
