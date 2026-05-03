@@ -754,8 +754,7 @@ class PropertysetImplTest {
         aspectlist.add(valueCreator.newPropertyset(UUID.randomUUID()));
         aspectlist.add(valueCreator.newPropertyset(UUID.randomUUID()));
         aspectlist.add(valueCreator.newPropertyset(UUID.randomUUID()));
-        var aspectsValue = valueCreator.fromValueList(aspectlist);
-        return aspectsValue;
+        return valueCreator.fromValueList(aspectlist);
     }
 
     private void populatePropertyset(Propertyset propertyset, ValueCreatorProvider valueCreator, UUID id) {
